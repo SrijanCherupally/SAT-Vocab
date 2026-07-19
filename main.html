@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catalog — SAT Vocabulary Drill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F2ECDD;
+    --paper-raised:#FBF7EC;
+    --line:#CFC2A3;
+    --line-soft:#E3D9C0;
+    --ink:#232A38;
+    --ink-soft:#5C6473;
+    --ink-faint:#8A8F7C;
+    --brass:#A07E2E;
+    --brass-dark:#7C5F1F;
+    --brass-bg:#EFE3C4;
+    --green:#3E6B4C;
+    --green-bg:#DEEAE0;
+    --green-line:#B7CFBB;
+    --red:#9C4236;
+    --red-bg:#F3E1DC;
+    --red-line:#DBB9AF;
+    --shadow: 0 1px 0 rgba(35,42,56,0.05), 0 8px 20px -12px rgba(35,42,56,0.35);
+    --shadow-lg: 0 2px 0 rgba(35,42,56,0.06), 0 20px 40px -20px rgba(35,42,56,0.45);
+    --serif: "Source Serif 4", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, #FAF5E8 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--brass-bg); }
+
+  button{ font-family:inherit; cursor:pointer; }
+  button:focus-visible, [tabindex]:focus-visible, input:focus-visible, select:focus-visible{
+    outline:3px solid var(--brass);
+    outline-offset:2px;
+  }
+
+  .app{
+    max-width:820px;
+    margin:0 auto;
+    padding:28px 20px 60px;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:28px;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .masthead .brand{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+  }
+  .brand-mark{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:26px;
+    letter-spacing:0.02em;
+  }
+  .brand-sub{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    border-left:1px solid var(--line);
+    padding-left:10px;
+  }
+  .masthead-nav{
+    display:flex;
+    gap:6px;
+  }
+  .ghost-btn{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    font-size:12px;
+    font-family:var(--mono);
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    padding:7px 12px;
+    border-radius:3px;
+    transition:all .15s ease;
+  }
+  .ghost-btn:hover{ border-color:var(--ink); color:var(--ink); background:var(--paper-raised); }
+
+  /* ---------- Screens ---------- */
+  .screen{ display:none; flex:1; flex-direction:column; }
+  .screen.active{ display:flex; }
+
+  /* ---------- Setup screen ---------- */
+  .setup-intro{ margin-bottom:30px; max-width:520px; }
+  .setup-intro h1{
+    font-family:var(--serif);
+    font-size:30px;
+    font-weight:600;
+    line-height:1.25;
+    margin:0 0 10px;
+  }
+  .setup-intro p{
+    color:var(--ink-soft);
+    line-height:1.6;
+    margin:0;
+    font-size:15px;
+  }
+  .setup-count{
+    display:inline-block;
+    margin-top:14px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--brass-dark);
+    background:var(--brass-bg);
+    padding:4px 10px;
+    border-radius:3px;
+    letter-spacing:0.04em;
+  }
+
+  .option-groups{
+    display:grid;
+    gap:22px;
+    margin-bottom:10px;
+  }
+  .option-group label.group-label{
+    display:block;
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:10px;
+  }
+  .pill-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .pill{
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    padding:9px 16px;
+    border-radius:20px;
+    font-size:13.5px;
+    font-weight:500;
+    color:var(--ink-soft);
+    transition:all .15s ease;
+  }
+  .pill:hover{ border-color:var(--brass); color:var(--ink); }
+  .pill.selected{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper-raised);
+  }
+
+  .setup-footer{
+    margin-top:auto;
+    padding-top:26px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .primary-btn{
+    background:var(--ink);
+    color:var(--paper-raised);
+    border:none;
+    padding:14px 28px;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.03em;
+    border-radius:3px;
+    box-shadow:var(--shadow);
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .primary-btn:hover{ transform:translateY(-1px); box-shadow:var(--shadow-lg); background:#1a1f2a; }
+  .primary-btn:active{ transform:translateY(0); }
+  .primary-btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:none; }
+
+  .secondary-note{
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-faint);
+  }
+
+  /* ---------- Quiz screen ---------- */
+  .quiz-topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .progress-block{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .progress-track{
+    width:120px;
+    height:5px;
+    background:var(--line-soft);
+    border-radius:3px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--brass);
+    width:0%;
+    transition:width .3s ease;
+  }
+  .session-clock{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .quiz-actions{ display:flex; gap:8px; }
+  .icon-btn{
+    width:34px; height:34px;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    border-radius:3px;
+    color:var(--ink-soft);
+    font-size:14px;
+    transition:all .15s ease;
+  }
+  .icon-btn:hover{ border-color:var(--ink); color:var(--ink); }
+
+  /* Index card */
+  .index-card{
+    position:relative;
+    background:
+      repeating-linear-gradient(
+        to bottom,
+        transparent 0px, transparent 37px,
+        var(--line-soft) 37px, var(--line-soft) 38px
+      ),
+      var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:4px;
+    box-shadow:var(--shadow-lg);
+    padding:38px 34px 30px;
+    min-height:230px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    margin-bottom:22px;
+  }
+  .index-card::before{
+    content:"";
+    position:absolute;
+    top:14px; left:50%;
+    transform:translateX(-50%);
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--paper);
+    box-shadow:inset 0 1px 3px rgba(35,42,56,0.35), 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .card-tab{
+    position:absolute;
+    top:-1px; left:24px;
+    background:var(--ink);
+    color:var(--paper-raised);
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    padding:5px 10px;
+    border-radius:0 0 4px 4px;
+  }
+  .card-number{
+    position:absolute;
+    top:16px; right:20px;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-faint);
+    letter-spacing:0.05em;
+  }
+  .card-timer-ring{
+    position:absolute;
+    top:10px; right:20px;
+    display:none;
+    align-items:center;
+    gap:6px;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--brass-dark);
+  }
+  .definition-eyebrow{
+    text-align:center;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin:0 0 14px;
+  }
+  .definition-text{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:22px;
+    line-height:1.5;
+    text-align:center;
+    color:var(--ink);
+    margin:0;
+    padding:0 6px;
+  }
+
+  .question-timer-bar{
+    height:4px;
+    background:var(--line-soft);
+    border-radius:2px;
+    overflow:hidden;
+    margin-bottom:22px;
+    display:none;
+  }
+  .question-timer-fill{
+    height:100%;
+    width:100%;
+    background:var(--brass);
+    transition:width .1s linear, background .3s ease;
+  }
+
+  .options-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  @media (max-width:560px){
+    .options-grid{ grid-template-columns:1fr; }
+  }
+  .option-card{
+    position:relative;
+    text-align:left;
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:16px 16px 16px 44px;
+    font-family:var(--sans);
+    font-size:15.5px;
+    font-weight:500;
+    color:var(--ink);
+    transition:all .12s ease;
+    box-shadow:0 1px 0 rgba(35,42,56,0.04);
+  }
+  .option-card:hover:not(:disabled){
+    border-color:var(--brass);
+    transform:translateY(-1px);
+    box-shadow:var(--shadow);
+  }
+  .option-card:disabled{ cursor:default; }
+  .option-letter{
+    position:absolute;
+    left:14px; top:50%;
+    transform:translateY(-50%);
+    width:20px; height:20px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--ink-faint);
+  }
+  .option-card.correct{
+    background:var(--green-bg);
+    border-color:var(--green-line);
+    color:var(--green);
+  }
+  .option-card.correct .option-letter{ border-color:var(--green); color:var(--green); background:#fff; }
+  .option-card.incorrect{
+    background:var(--red-bg);
+    border-color:var(--red-line);
+    color:var(--red);
+  }
+  .option-card.incorrect .option-letter{ border-color:var(--red); color:var(--red); background:#fff; }
+  .option-card.dim{ opacity:0.55; }
+
+  .feedback-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:20px;
+    min-height:44px;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .feedback-msg{
+    font-family:var(--mono);
+    font-size:13px;
+    letter-spacing:0.02em;
+  }
+  .feedback-msg.correct{ color:var(--green); }
+  .feedback-msg.incorrect{ color:var(--red); }
+  .next-btn{
+    background:var(--ink);
+    color:var(--paper-raised);
+    border:none;
+    padding:11px 22px;
+    font-size:13px;
+    font-weight:600;
+    border-radius:3px;
+    letter-spacing:0.02em;
+    box-shadow:var(--shadow);
+    display:none;
+  }
+  .next-btn:hover{ background:#1a1f2a; }
+
+  /* ---------- Pause overlay ---------- */
+  .pause-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(35,42,56,0.55);
+    backdrop-filter:blur(2px);
+    align-items:center;
+    justify-content:center;
+    z-index:50;
+    padding:20px;
+  }
+  .pause-overlay.active{ display:flex; }
+  .pause-card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:36px 34px;
+    max-width:360px;
+    width:100%;
+    box-shadow:var(--shadow-lg);
+    text-align:center;
+  }
+  .pause-card h2{
+    font-family:var(--serif);
+    font-size:24px;
+    margin:0 0 8px;
+  }
+  .pause-card p{
+    color:var(--ink-soft);
+    font-size:14px;
+    line-height:1.55;
+    margin:0 0 24px;
+  }
+  .pause-actions{ display:flex; flex-direction:column; gap:10px; }
+  .pause-actions .primary-btn{ width:100%; }
+  .pause-actions .ghost-btn{ width:100%; padding:12px; }
+
+  /* ---------- Summary screen ---------- */
+  .summary-hero{
+    display:flex;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+    padding-bottom:26px;
+    border-bottom:1px solid var(--line);
+  }
+  .summary-hero h1{
+    font-family:var(--serif);
+    font-size:28px;
+    margin:0 0 6px;
+  }
+  .summary-hero .summary-sub{
+    color:var(--ink-soft);
+    font-size:14px;
+    margin:0;
+  }
+  .stat-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
+    gap:14px;
+    margin-bottom:30px;
+  }
+  .stat-tile{
+    border:1px solid var(--line);
+    background:var(--paper-raised);
+    border-radius:4px;
+    padding:16px 16px;
+  }
+  .stat-tile .stat-value{
+    font-family:var(--serif);
+    font-size:30px;
+    font-weight:600;
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .stat-tile.accent .stat-value{ color:var(--brass-dark); }
+  .stat-tile .stat-label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+  }
+
+  .section-heading{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 12px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+  }
+
+  .missed-list{
+    list-style:none;
+    margin:0 0 30px;
+    padding:0;
+    border-top:1px solid var(--line);
+  }
+  .missed-list li{
+    padding:13px 2px;
+    border-bottom:1px solid var(--line-soft);
+    display:flex;
+    gap:14px;
+    align-items:baseline;
+    flex-wrap:wrap;
+  }
+  .missed-term{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:16px;
+    min-width:130px;
+  }
+  .missed-def{
+    color:var(--ink-soft);
+    font-size:13.5px;
+    flex:1;
+    min-width:200px;
+  }
+  .missed-empty{
+    padding:18px 2px;
+    color:var(--ink-faint);
+    font-size:14px;
+    font-style:italic;
+    font-family:var(--serif);
+  }
+
+  .summary-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  /* ---------- Stats screen ---------- */
+  .stats-empty{
+    border:1px dashed var(--line);
+    border-radius:6px;
+    padding:40px 20px;
+    text-align:center;
+    color:var(--ink-faint);
+    font-family:var(--serif);
+    font-style:italic;
+  }
+  .session-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto auto auto;
+    gap:16px;
+    align-items:center;
+    padding:14px 4px;
+    border-bottom:1px solid var(--line-soft);
+    font-size:13.5px;
+  }
+  .session-row .idx{
+    font-family:var(--mono);
+    color:var(--ink-faint);
+    font-size:11px;
+  }
+  .session-row .mode-tag{
+    font-family:var(--mono);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    color:var(--ink-soft);
+  }
+  .session-row .acc{
+    font-family:var(--mono);
+    font-weight:600;
+  }
+  .session-row .acc.good{ color:var(--green); }
+  .session-row .acc.mid{ color:var(--brass-dark); }
+  .session-row .acc.low{ color:var(--red); }
+  .session-row .when{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); }
+
+  .worst-words{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin-bottom:30px;
+  }
+  .worst-chip{
+    border:1px solid var(--red-line);
+    background:var(--red-bg);
+    color:var(--red);
+    font-family:var(--mono);
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:20px;
+  }
+  .worst-chip b{ font-weight:700; }
+
+  footer.legal{
+    margin-top:40px;
+    padding-top:16px;
+    border-top:1px solid var(--line-soft);
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--ink-faint);
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="masthead">
+    <div class="brand">
+      <span class="brand-mark">Catalog</span>
+      <span class="brand-sub">SAT Vocabulary Drill</span>
+    </div>
+    <div class="masthead-nav" id="global-nav" style="display:none;">
+      <button class="ghost-btn" data-nav="setup">New Drill</button>
+      <button class="ghost-btn" data-nav="stats">Stats</button>
+    </div>
+  </div>
+
+  <!-- ===================== SETUP SCREEN ===================== -->
+  <section class="screen active" id="screen-setup">
+    <div class="setup-intro">
+      <h1>Pick a drawer, start drawing cards.</h1>
+      <p>Every card shows a definition. You match it to the word, against the clock if you like. Missed cards get filed for review at the end.</p>
+      <span class="setup-count" id="deck-size-label">1117 words in the drawer</span>
+    </div>
+
+    <div class="option-groups">
+      <div class="option-group">
+        <label class="group-label">Session length</label>
+        <div class="pill-row" id="group-length">
+          <button class="pill" data-len="10">10 cards</button>
+          <button class="pill selected" data-len="25">25 cards</button>
+          <button class="pill" data-len="50">50 cards</button>
+          <button class="pill" data-len="0">Endless</button>
+        </div>
+      </div>
+
+      <div class="option-group">
+        <label class="group-label">Time per card</label>
+        <div class="pill-row" id="group-timer">
+          <button class="pill" data-timer="0">No limit</button>
+          <button class="pill" data-timer="10">10s</button>
+          <button class="pill selected" data-timer="15">15s</button>
+          <button class="pill" data-timer="20">20s</button>
+          <button class="pill" data-timer="30">30s</button>
+        </div>
+      </div>
+
+      <div class="option-group" id="review-group" style="display:none;">
+        <label class="group-label">Word pool</label>
+        <div class="pill-row" id="group-pool">
+          <button class="pill selected" data-pool="all">Full drawer</button>
+          <button class="pill" data-pool="missed">Missed words only (<span id="missed-pool-count">0</span>)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="setup-footer">
+      <button class="primary-btn" id="start-btn">Start drill →</button>
+      <span class="secondary-note" id="setup-note">Definition shown. Choose the matching word from 4 choices.</span>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ SCREEN ===================== -->
+  <section class="screen" id="screen-quiz">
+    <div class="quiz-topbar">
+      <div class="progress-block">
+        <span id="progress-text">Card 1 of 25</span>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      </div>
+      <div class="session-clock">⏱ <span id="session-clock">00:00</span></div>
+      <div class="quiz-actions">
+        <button class="icon-btn" id="pause-btn" title="Pause session">⏸</button>
+        <button class="icon-btn" id="end-btn" title="End session">■</button>
+      </div>
+    </div>
+
+    <div class="question-timer-bar" id="question-timer-bar">
+      <div class="question-timer-fill" id="question-timer-fill"></div>
+    </div>
+
+    <div class="index-card">
+      <span class="card-tab" id="card-tab">Definition</span>
+      <span class="card-number" id="card-number">No. 0001</span>
+      <span class="card-timer-ring" id="card-timer-ring">⏳ <span id="card-timer-num">15</span>s</span>
+      <p class="definition-eyebrow">Which word matches this definition?</p>
+      <p class="definition-text" id="definition-text">—</p>
+    </div>
+
+    <div class="options-grid" id="options-grid"></div>
+
+    <div class="feedback-row">
+      <span class="feedback-msg" id="feedback-msg"></span>
+      <button class="next-btn" id="next-btn">Next card →</button>
+    </div>
+  </section>
+
+  <!-- ===================== SUMMARY SCREEN ===================== -->
+  <section class="screen" id="screen-summary">
+    <div class="summary-hero">
+      <div>
+        <h1 id="summary-title">Drawer closed.</h1>
+        <p class="summary-sub" id="summary-sub">Here's how the session went.</p>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-tile accent">
+        <div class="stat-value" id="stat-accuracy">0%</div>
+        <div class="stat-label">Accuracy</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-value" id="stat-correct">0</div>
+        <div class="stat-label">Correct</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-value" id="stat-missed">0</div>
+        <div class="stat-label">Missed</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-value" id="stat-avgtime">0.0s</div>
+        <div class="stat-label">Avg. time / card</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-value" id="stat-duration">00:00</div>
+        <div class="stat-label">Session length</div>
+      </div>
+    </div>
+
+    <p class="section-heading">Filed for review — missed words</p>
+    <ul class="missed-list" id="missed-list"></ul>
+
+    <div class="summary-actions">
+      <button class="primary-btn" id="review-missed-btn">Review missed words →</button>
+      <button class="ghost-btn" id="new-session-btn">New drill</button>
+      <button class="ghost-btn" id="view-stats-btn">View all stats</button>
+    </div>
+  </section>
+
+  <!-- ===================== STATS SCREEN ===================== -->
+  <section class="screen" id="screen-stats">
+    <div class="setup-intro">
+      <h1>The record book.</h1>
+      <p>Every session you run in this browser tab is logged here — accuracy, timing, and the words that keep slipping past you.</p>
+    </div>
+
+    <p class="section-heading">Words missed most often</p>
+    <div class="worst-words" id="worst-words"></div>
+
+    <p class="section-heading">Session history</p>
+    <div id="stats-history"></div>
+
+    <div class="summary-actions" style="margin-top:26px;">
+      <button class="primary-btn" id="stats-new-btn">Start a new drill</button>
+    </div>
+  </section>
+
+  <footer class="legal">Session data lives only in this browser tab and resets on reload.</footer>
+</div>
+
+<!-- ===================== PAUSE OVERLAY ===================== -->
+<div class="pause-overlay" id="pause-overlay">
+  <div class="pause-card">
+    <h2>Session paused</h2>
+    <p>Your progress and timer are on hold. Pick up right where you left off, or close out the drawer now.</p>
+    <div class="pause-actions">
+      <button class="primary-btn" id="resume-btn">Resume drill</button>
+      <button class="ghost-btn" id="pause-end-btn">End session now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   VOCAB DATA
+   ============================================================ */
+const VOCAB = [{"term": "abase", "definition": "(v.) to humiliate, degrade; belittle, demean"}, {"term": "abate", "definition": "(v.) to lessen or reduce; subside, dwindle"}, {"term": "abdicate", "definition": "(v.) to give up power; resign, relinquish"}, {"term": "abduct", "definition": "(v.) to kidnap or seize by force; snatch, carry off"}, {"term": "aberration", "definition": "(n.) a deviation from the norm; anomaly, irregularity"}, {"term": "abet", "definition": "(v.) to assist in wrongdoing; aid, encourage"}, {"term": "abhor", "definition": "(v.) to hate deeply; detest, loathe"}, {"term": "abide", "definition": "(v.) to tolerate or follow; accept, obey"}, {"term": "abject", "definition": "(adj.) hopeless and miserable; wretched, degraded"}, {"term": "abjure", "definition": "(v.) to formally reject; renounce, forswear"}, {"term": "abnegation", "definition": "(n.) self-denial; renunciation, rejection"}, {"term": "abort", "definition": "(v.) to terminate early; cancel, halt"}, {"term": "abridge", "definition": "(v.) to shorten; condense, trim"}, {"term": "abrogate", "definition": "(v.) to cancel by authority; repeal, annul"}, {"term": "abrupt", "definition": "(adj.) sudden or curt; hasty, blunt"}, {"term": "abscond", "definition": "(v.) to run away secretly; flee, bolt"}, {"term": "absolution", "definition": "(n.) formal forgiveness; pardon, mercy"}, {"term": "abstain", "definition": "(v.) to hold back voluntarily; refrain, avoid"}, {"term": "abstruse", "definition": "(adj.) difficult to understand; obscure, puzzling"}, {"term": "accede", "definition": "(v.) to agree or comply; consent, yield"}, {"term": "accentuate", "definition": "(v.) to emphasize or highlight; stress, underscore"}, {"term": "accessible", "definition": "(adj.) easy to reach or understand; available, approachable"}, {"term": "accessory", "definition": "(n.) a supplementary item; add-on, ornament"}, {"term": "acclaim", "definition": "(v.) to praise publicly; applaud, commend"}, {"term": "accolade", "definition": "(n.) an award or honor; praise, recognition"}, {"term": "accommodating", "definition": "(adj.) willing to help; obliging, cooperative"}, {"term": "accord", "definition": "(n.) agreement or harmony; consensus, unity"}, {"term": "accost", "definition": "(v.) to approach aggressively; confront, hassle"}, {"term": "account for", "definition": "(v.) to explain or justify; clarify, rationalize"}, {"term": "accretion", "definition": "(n.) gradual growth; buildup, accumulation"}, {"term": "acerbic", "definition": "(adj.) sharp or bitter in tone; harsh, sarcastic"}, {"term": "acquiesce", "definition": "(v.) to give in passively; comply, yield"}, {"term": "acrimony", "definition": "(n.) bitterness or hostility; resentment, rancor"}, {"term": "acumen", "definition": "(n.) keen insight or skill; shrewdness, expertise"}, {"term": "acute", "definition": "(adj.) sharp or severe; intense, keen"}, {"term": "adamant", "definition": "(adj.) unyielding or firm; stubborn, resolute"}, {"term": "adept", "definition": "(adj.) highly skilled; proficient, expert"}, {"term": "adhere", "definition": "(v.) to stick to or follow; cling, comply"}, {"term": "admonish", "definition": "(v.) to warn or scold; reprimand, caution"}, {"term": "adorn", "definition": "(v.) to decorate or beautify; embellish, garnish"}, {"term": "adroit", "definition": "(adj.) skillful and clever; adept, nimble"}, {"term": "adulation", "definition": "(n.) excessive praise; flattery, worship"}, {"term": "adulterate", "definition": "(v.) to make impure; contaminate, dilute"}, {"term": "adumbrate", "definition": "(v.) to foreshadow or suggest; outline, hint"}, {"term": "adverse", "definition": "(adj.) unfavorable or harmful; negative, detrimental"}, {"term": "advocate", "definition": "(v.) to support or argue for; promote, endorse"}, {"term": "aerial", "definition": "(adj.) related to the air; airborne, flying"}, {"term": "aesthetic", "definition": "(adj.) concerned with beauty; artistic, tasteful"}, {"term": "affable", "definition": "(adj.) friendly and easy to talk to; sociable, approachable"}, {"term": "affinity", "definition": "(n.) a natural connection or liking; attraction, bond"}, {"term": "affluent", "definition": "(adj.) wealthy and well-off; rich, prosperous"}, {"term": "affront", "definition": "(n.) an insult or offense; slight, indignity"}, {"term": "aggrandize", "definition": "(v.) to increase in power or wealth; glorify, magnify"}, {"term": "aggravate", "definition": "(v.) to make worse; worsen, intensify"}, {"term": "aggregate", "definition": "(n.) a whole formed by parts; sum, total"}, {"term": "aggrieved", "definition": "(adj.) feeling wronged or offended; resentful, upset"}, {"term": "agile", "definition": "(adj.) quick and nimble; graceful, spry"}, {"term": "agnostic", "definition": "(n.) one who doubts religious certainty; skeptic, doubter"}, {"term": "agriculture", "definition": "(n.) farming or cultivation; agronomy, husbandry"}, {"term": "aisle", "definition": "(n.) a walkway between rows; corridor, passage"}, {"term": "alacrity", "definition": "(n.) eager readiness; enthusiasm, willingness"}, {"term": "alias", "definition": "(n.) a false or assumed name; pseudonym, nickname"}, {"term": "allay", "definition": "(v.) to ease or calm; soothe, alleviate"}, {"term": "allege", "definition": "(v.) to claim without proof; assert, accuse"}, {"term": "alleviate", "definition": "(v.) to lessen or relieve; ease, mitigate"}, {"term": "allocate", "definition": "(v.) to assign or distribute; designate, allot"}, {"term": "aloof", "definition": "(adj.) emotionally distant; detached, reserved"}, {"term": "altercation", "definition": "(n.) a noisy argument; dispute, quarrel"}, {"term": "amalgamate", "definition": "(v.) to combine or unite; merge, blend"}, {"term": "ambiguous", "definition": "(adj.) unclear or having multiple meanings; vague, equivocal"}, {"term": "ambivalent", "definition": "(adj.) having mixed feelings; uncertain, conflicted"}, {"term": "ameliorate", "definition": "(v.) to improve or make better; enhance, upgrade"}, {"term": "amenable", "definition": "(adj.) open to suggestion; cooperative, agreeable"}, {"term": "amenity", "definition": "(n.) a useful feature; convenience, facility"}, {"term": "amiable", "definition": "(adj.) friendly and pleasant; good-natured, warm"}, {"term": "amicable", "definition": "(adj.) done in a friendly way; peaceful, cordial"}, {"term": "amorous", "definition": "(adj.) full of love or desire; romantic, affectionate"}, {"term": "amorphous", "definition": "(adj.) without a clear shape; shapeless, vague"}, {"term": "anachronistic", "definition": "(adj.) out of place in time; outdated, misplaced"}, {"term": "analgesic", "definition": "(n.) pain reliever; painkiller, anesthetic"}, {"term": "analogous", "definition": "(adj.) comparable or similar; alike, equivalent"}, {"term": "anarchist", "definition": "(n.) one who opposes all government; rebel, revolutionary"}, {"term": "anathema", "definition": "(n.) something hated or cursed; abomination, pariah"}, {"term": "anecdote", "definition": "(n.) a short personal story; tale, narrative"}, {"term": "anesthesia", "definition": "(n.) loss of sensation; numbing, sedation"}, {"term": "anguish", "definition": "(n.) great pain or suffering; agony, torment"}, {"term": "animated", "definition": "(adj.) full of life or excitement; lively, spirited"}, {"term": "animosities toward", "definition": "(n.) strong hostility; hatred, resentment"}, {"term": "annex", "definition": "(v.) to add or attach; acquire, append"}, {"term": "annul", "definition": "(v.) to cancel legally; void, invalidate"}, {"term": "anomaly", "definition": "(n.) something unusual; irregularity, exception"}, {"term": "anonymous", "definition": "(adj.) unnamed or unknown; unidentified, incognito"}, {"term": "antagonism", "definition": "(n.) hostility or opposition; conflict, enmity"}, {"term": "antecedent", "definition": "(n.) something that comes before; precursor, predecessor"}, {"term": "antediluvian", "definition": "(adj.) extremely old; ancient, outdated"}, {"term": "anthology", "definition": "(n.) a collection of writings; compilation, selection"}, {"term": "antipathy", "definition": "(n.) a strong dislike; aversion, hostility"}, {"term": "antiquated", "definition": "(adj.) outdated or old-fashioned; obsolete, archaic"}, {"term": "antiseptic", "definition": "(adj.) clean or sterile; disinfected, germ-free"}, {"term": "antithesis", "definition": "(n.) the direct opposite; contrast, reverse"}, {"term": "anxiety", "definition": "(n.) nervousness or worry; unease, apprehension"}, {"term": "apathetic", "definition": "(adj.) lacking interest or emotion; indifferent, unconcerned"}, {"term": "apocryphal", "definition": "(adj.) of doubtful authenticity; false, dubious"}, {"term": "appalling", "definition": "(adj.) shocking or horrifying; dreadful, terrible"}, {"term": "appease", "definition": "(v.) to calm or satisfy; pacify, soothe"}, {"term": "appraise", "definition": "(v.) to evaluate or assess; estimate, judge"}, {"term": "apprehend", "definition": "(v.) to arrest or understand; capture, grasp"}, {"term": "approbation", "definition": "(n.) approval or praise; commendation, endorsement"}, {"term": "appropriate", "definition": "(v.) to take or assign; seize, allocate"}, {"term": "aquatic", "definition": "(adj.) relating to water; marine, watery"}, {"term": "arable", "definition": "(adj.) suitable for farming; fertile, cultivable"}, {"term": "arbiter", "definition": "(n.) a judge or mediator; referee, umpire"}, {"term": "arbitrary", "definition": "(adj.) based on whim, not reason; random, capricious"}, {"term": "arbitration", "definition": "(n.) legal settling of disputes; mediation, negotiation"}, {"term": "arboreal", "definition": "(adj.) related to trees; woody, tree-dwelling"}, {"term": "arcane", "definition": "(adj.) mysterious or secret; obscure, esoteric"}, {"term": "archaic", "definition": "(adj.) old and no longer used; outdated, ancient"}, {"term": "archetypal", "definition": "(adj.) representing an ideal example; classic, standard"}, {"term": "ardor", "definition": "(n.) intense passion or enthusiasm; zeal, fervor"}, {"term": "arid", "definition": "(adj.) extremely dry; barren, parched"}, {"term": "arrogate", "definition": "(v.) to claim without right; seize, appropriate"}, {"term": "artifact", "definition": "(n.) an object made by humans; relic, antiquity"}, {"term": "artisan", "definition": "(n.) a skilled craftsperson; craftsman, maker"}, {"term": "ascertain", "definition": "(v.) to find out for certain; determine, verify"}, {"term": "ascetic", "definition": "(adj.) practicing strict self-discipline; austere, self-denying"}, {"term": "ascribe", "definition": "(v.) to attribute to a cause; credit, assign"}, {"term": "aspersion", "definition": "(n.) a damaging remark; slander, defamation"}, {"term": "aspire", "definition": "(v.) to strive toward a goal; aim, desire"}, {"term": "assail", "definition": "(v.) to attack violently; assault, criticize"}, {"term": "asserted", "definition": "(v.) declared confidently; claimed, stated"}, {"term": "assess", "definition": "(v.) to evaluate or judge; appraise, rate"}, {"term": "assiduous", "definition": "(adj.) hardworking and diligent; persistent, industrious"}, {"term": "assuage", "definition": "(v.) to ease or relieve; soothe, calm"}, {"term": "astute", "definition": "(adj.) sharp or clever; perceptive, shrewd"}, {"term": "asylum", "definition": "(n.) protection or shelter; refuge, sanctuary"}, {"term": "atone", "definition": "(v.) to make up for a wrong; repent, redeem"}, {"term": "atrophy", "definition": "(v.) to waste away; wither, degenerate"}, {"term": "attain", "definition": "(v.) to reach or accomplish; achieve, secure"}, {"term": "atypical", "definition": "(adj.) not normal or usual; irregular, uncommon"}, {"term": "audacious", "definition": "(adj.) bold and daring; fearless, brazen"}, {"term": "audible", "definition": "(adj.) able to be heard; perceptible, clear"}, {"term": "augment", "definition": "(v.) to increase or enlarge; expand, boost"}, {"term": "auspicious", "definition": "(adj.) favorable or promising; fortunate, encouraging"}, {"term": "austere", "definition": "(adj.) strict or plain; severe, simple"}, {"term": "avarice", "definition": "(n.) extreme greed; materialism, cupidity"}, {"term": "avenge", "definition": "(v.) to take revenge for; retaliate, punish"}, {"term": "aversion", "definition": "(n.) strong dislike; loathing, repulsion"}, {"term": "balk", "definition": "(v.) to hesitate or refuse; resist, recoil"}, {"term": "ballad", "definition": "(n.) a narrative poem or song; folk song, ode"}, {"term": "banal", "definition": "(adj.) lacking originality; cliché, trite"}, {"term": "bane", "definition": "(n.) a cause of distress or annoyance; curse, burden"}, {"term": "bard", "definition": "(n.) a poet or singer; minstrel, troubadour"}, {"term": "bashful", "definition": "(adj.) shy or easily embarrassed; timid, reserved"}, {"term": "battery", "definition": "(n.) a beating or group of similar items; assault, set"}, {"term": "beguile", "definition": "(v.) to charm or deceive; mislead, enchant"}, {"term": "behemoth", "definition": "(n.) something enormous; giant, titan"}, {"term": "beneficial", "definition": "(adj.) helpful or good; advantageous, favorable"}, {"term": "benevolent", "definition": "(adj.) kind and generous; charitable, compassionate"}, {"term": "benign", "definition": "(adj.) harmless or gentle; mild, nonthreatening"}, {"term": "bequeath", "definition": "(v.) to leave in a will; hand down, pass on"}, {"term": "berate", "definition": "(v.) to scold harshly; rebuke, reprimand"}, {"term": "bereft", "definition": "(adj.) deprived or lacking; empty, without"}, {"term": "beseech", "definition": "(v.) to beg urgently; implore, plead"}, {"term": "bias", "definition": "(n.) a preference or prejudice; inclination, favoritism"}, {"term": "bilk", "definition": "(v.) to cheat or defraud; swindle, deceive"}, {"term": "blandish", "definition": "(v.) to flatter or coax; charm, cajole"}, {"term": "blemish", "definition": "(n.) an imperfection; flaw, defect"}, {"term": "blight", "definition": "(n.) something that ruins or destroys; plague, curse"}, {"term": "boisterous", "definition": "(adj.) noisy and rowdy; loud, rambunctious"}, {"term": "bombastic", "definition": "(adj.) overly wordy or inflated; pompous, pretentious"}, {"term": "boon", "definition": "(n.) a blessing or benefit; advantage, aid"}, {"term": "bourgeois", "definition": "(adj.) middle-class, conventional; materialistic, commonplace"}, {"term": "brazen", "definition": "(adj.) shameless or bold; audacious, impudent"}, {"term": "brusque", "definition": "(adj.) abrupt or blunt; curt, rude"}, {"term": "buffet", "definition": "(v.) to strike repeatedly; batter, pummel"}, {"term": "burnish", "definition": "(v.) to polish or shine; buff, smooth"}, {"term": "buttress", "definition": "(v.) to support or strengthen; reinforce, uphold"}, {"term": "cacophony", "definition": "(n.) harsh, jarring sound; dissonance, noise"}, {"term": "cadence", "definition": "(n.) rhythm or flow; tempo, beat"}, {"term": "cajole", "definition": "(v.) to persuade with flattery; coax, wheedle"}, {"term": "calamity", "definition": "(n.) a great disaster or misfortune; catastrophe, tragedy"}, {"term": "calibrate", "definition": "(v.) to adjust or measure precisely; fine-tune, align"}, {"term": "callous", "definition": "(adj.) emotionally insensitive; heartless, unfeeling"}, {"term": "calumny", "definition": "(n.) a false and malicious accusation; slander, defamation"}, {"term": "camaraderie", "definition": "(n.) mutual trust among friends; fellowship, companionship"}, {"term": "candid", "definition": "(adj.) honest and direct; frank, open"}, {"term": "candor", "definition": "(n.) openness and honesty; sincerity, truthfulness"}, {"term": "canny", "definition": "(adj.) clever and careful; shrewd, astute"}, {"term": "canvas", "definition": "(n.) a heavy fabric or painting surface; tarp, backdrop"}, {"term": "capacious", "definition": "(adj.) spacious or roomy; ample, expansive"}, {"term": "capitulate", "definition": "(v.) to surrender or give in; yield, submit"}, {"term": "capricious", "definition": "(adj.) impulsive and unpredictable; erratic, whimsical"}, {"term": "captivate", "definition": "(v.) to attract or charm; enchant, fascinate"}, {"term": "carouse", "definition": "(v.) to party or drink loudly; revel, celebrate"}, {"term": "carp", "definition": "(v.) to complain or find fault; nag, grumble"}, {"term": "catalog", "definition": "(v.) to list or classify; organize, inventory"}, {"term": "catalyze", "definition": "(v.) to trigger or accelerate; activate, spark"}, {"term": "catastrophic", "definition": "(adj.) disastrous or ruinous; devastating, calamitous"}, {"term": "caucus", "definition": "(n.) a meeting of party leaders; assembly, gathering"}, {"term": "caustic", "definition": "(adj.) severely sarcastic or biting; scathing, corrosive"}, {"term": "cavort", "definition": "(v.) to leap or dance around excitedly; frolic, romp"}, {"term": "censure", "definition": "(v.) to criticize harshly; condemn, reprimand"}, {"term": "cerebral", "definition": "(adj.) intellectual rather than emotional; analytical, rational"}, {"term": "chaos", "definition": "(n.) complete disorder or confusion; turmoil, mayhem"}, {"term": "chastise", "definition": "(v.) to scold or punish; reprimand, berate"}, {"term": "cherish", "definition": "(v.) to deeply value or hold dear; treasure, adore"}, {"term": "chide", "definition": "(v.) to mildly scold; rebuke, lecture"}, {"term": "choreography", "definition": "(n.) planned dance movements; routine, staging"}, {"term": "chronicle", "definition": "(v.) to record in detail; document, recount"}, {"term": "chronological", "definition": "(adj.) arranged by time order; sequential, historical"}, {"term": "circuitous", "definition": "(adj.) indirect or roundabout; winding, meandering"}, {"term": "circumlocution", "definition": "(n.) wordy or evasive language; verbosity, periphrasis"}, {"term": "circumscribed", "definition": "(adj.) limited or restricted; confined, bounded"}, {"term": "circumspect", "definition": "(adj.) cautious and careful; prudent, wary"}, {"term": "circumvent", "definition": "(v.) to avoid by cleverness; evade, bypass"}, {"term": "clairvoyant", "definition": "(adj.) able to foresee the future; psychic, prophetic"}, {"term": "clamor", "definition": "(n.) loud noise or shouting; uproar, outcry"}, {"term": "clandestine", "definition": "(adj.) secret or hidden; covert, undercover"}, {"term": "clarify", "definition": "(v.) to make clear or understandable; explain, illuminate"}, {"term": "cleave", "definition": "(v.) to split or cling tightly; chop, adhere"}, {"term": "clemency", "definition": "(n.) mercy or leniency; forgiveness, compassion"}, {"term": "clergy", "definition": "(n.) religious leaders; ministers, priests"}, {"term": "cloying", "definition": "(adj.) overly sweet or sentimental; syrupy, saccharine"}, {"term": "coagulate", "definition": "(v.) to thicken or clot; congeal, curdle"}, {"term": "coalesce", "definition": "(v.) to come together as one; merge, unite"}, {"term": "cobbler", "definition": "(n.) a person who repairs shoes; shoemaker, cordwainer"}, {"term": "coerce", "definition": "(v.) to force or pressure; compel, intimidate"}, {"term": "cogent", "definition": "(adj.) convincing and clear; persuasive, compelling"}, {"term": "cognizant", "definition": "(adj.) aware or informed; conscious, mindful"}, {"term": "coherent", "definition": "(adj.) logically connected; consistent, rational"}, {"term": "collaboration", "definition": "(n.) working together; partnership, cooperation"}, {"term": "collateral", "definition": "(n.) security for a loan; guarantee, backing"}, {"term": "colloquial", "definition": "(adj.) informal in language; conversational, casual"}, {"term": "collusion", "definition": "(n.) secret cooperation for deceit; conspiracy, complicity"}, {"term": "colossus", "definition": "(n.) a giant or huge thing; titan, behemoth"}, {"term": "combustion", "definition": "(n.) act of burning; ignition, explosion"}, {"term": "commendation", "definition": "(n.) praise or award; recognition, honor"}, {"term": "commensurate", "definition": "(adj.) in proportion or equal; corresponding, equivalent"}, {"term": "commodious", "definition": "(adj.) spacious and comfortable; roomy, ample"}, {"term": "commonplace", "definition": "(adj.) ordinary or unremarkable; usual, routine"}, {"term": "compelling", "definition": "(adj.) forceful and convincing; persuasive, gripping"}, {"term": "compensate", "definition": "(v.) to make up for; repay, offset"}, {"term": "complacency", "definition": "(n.) self-satisfaction, often with ignorance; smugness, contentment"}, {"term": "complement", "definition": "(v.) to complete or enhance; match, balance"}, {"term": "compliant", "definition": "(adj.) willing to obey; obedient, submissive"}, {"term": "complicit", "definition": "(adj.) involved in wrongdoing; guilty, conniving"}, {"term": "compliment", "definition": "(n.) a polite expression of praise; flattery, accolade"}, {"term": "compound", "definition": "(v.) to make worse or add to; worsen, intensify"}, {"term": "comprehensive", "definition": "(adj.) complete and thorough; exhaustive, all-inclusive"}, {"term": "compress", "definition": "(v.) to press together or condense; compact, squeeze"}, {"term": "comprises", "definition": "(v.) consists of; includes, contains"}, {"term": "compunction", "definition": "(n.) a feeling of guilt or regret; remorse, regret"}, {"term": "concealed", "definition": "(adj.) hidden or kept secret; covered, disguised"}, {"term": "concede", "definition": "(v.) to admit or yield; acknowledge, surrender"}, {"term": "conciliatory", "definition": "(adj.) intended to make peace; appeasing, pacifying"}, {"term": "concise", "definition": "(adj.) brief and to the point; succinct, compact"}, {"term": "concoct", "definition": "(v.) to invent or devise; create, fabricate"}, {"term": "concomitant", "definition": "(adj.) accompanying or concurrent; simultaneous, related"}, {"term": "concord", "definition": "(n.) agreement or harmony; peace, unity"}, {"term": "condolence", "definition": "(n.) expression of sympathy; compassion, solace"}, {"term": "condone", "definition": "(v.) to accept or overlook; excuse, tolerate"}, {"term": "conduit", "definition": "(n.) a channel or passage; pipe, means"}, {"term": "confection", "definition": "(n.) a sweet or fancy dish; treat, dessert"}, {"term": "confidant", "definition": "(n.) a trusted person; friend, adviser"}, {"term": "confined to", "definition": "(adj.) restricted to a space or idea; limited, constrained"}, {"term": "conflagration", "definition": "(n.) a large fire; blaze, inferno"}, {"term": "confluence", "definition": "(n.) a meeting or joining; convergence, union"}, {"term": "conformist", "definition": "(n.) one who follows rules or norms; follower, traditionalist"}, {"term": "confound", "definition": "(v.) to confuse or puzzle; baffle, stump"}, {"term": "congeal", "definition": "(v.) to thicken or solidify; harden, clot"}, {"term": "congenial", "definition": "(adj.) pleasant and friendly; agreeable, likable"}, {"term": "congregation", "definition": "(n.) a gathering of people, often for worship; assembly, crowd"}, {"term": "congruity", "definition": "(n.) harmony or agreement; consistency, compatibility"}, {"term": "connive", "definition": "(v.) to secretly cooperate or plot; conspire, scheme"}, {"term": "consecrate", "definition": "(v.) to declare sacred; bless, dedicate"}, {"term": "consensus", "definition": "(n.) general agreement; unity, accord"}, {"term": "consequently", "definition": "(adv.) as a result; therefore, thus"}, {"term": "consign", "definition": "(v.) to deliver or hand over; assign, entrust"}, {"term": "consolation", "definition": "(n.) comfort after loss or disappointment; solace, relief"}, {"term": "consonant", "definition": "(adj.) in agreement or harmony; consistent, compatible"}, {"term": "constituent", "definition": "(n.) a part or component; element, ingredient"}, {"term": "constrain", "definition": "(v.) to force or limit; restrict, confine"}, {"term": "construct", "definition": "(v.) to build or form; assemble, create"}, {"term": "construe", "definition": "(v.) to interpret or understand; analyze, explain"}, {"term": "consummate", "definition": "(adj.) complete or perfect; masterful, skilled"}, {"term": "consumption", "definition": "(n.) the act of using or eating; intake, expenditure"}, {"term": "contemporaneous", "definition": "(adj.) occurring at the same time; simultaneous, concurrent"}, {"term": "contentious", "definition": "(adj.) argumentative or controversial; quarrelsome, combative"}, {"term": "contingent on", "definition": "(adj.) dependent on something else; conditional, reliant"}, {"term": "contravene", "definition": "(v.) to violate or go against; breach, oppose"}, {"term": "contrite", "definition": "(adj.) feeling regretful; remorseful, apologetic"}, {"term": "contrived", "definition": "(adj.) artificial or forced; unnatural, labored"}, {"term": "contusion", "definition": "(n.) a bruise or injury; swelling, bump"}, {"term": "conundrum", "definition": "(n.) a difficult puzzle or problem; dilemma, riddle"}, {"term": "convene", "definition": "(v.) to bring together or assemble; gather, summon"}, {"term": "convention", "definition": "(n.) a meeting or norm; conference, tradition"}, {"term": "convivial", "definition": "(adj.) sociable and lively; cheerful, festive"}, {"term": "convoluted", "definition": "(adj.) complex and difficult to follow; tangled, intricate"}, {"term": "copious", "definition": "(adj.) abundant or plentiful; ample, profuse"}, {"term": "cordial", "definition": "(adj.) warm and friendly; polite, pleasant"}, {"term": "coronation", "definition": "(n.) the act of crowning a monarch; enthronement, inauguration"}, {"term": "corpulence", "definition": "(n.) obesity or heaviness; fatness, bulk"}, {"term": "corroborate", "definition": "(v.) to confirm or support; verify, validate"}, {"term": "corrosive", "definition": "(adj.) eating away gradually; caustic, abrasive"}, {"term": "cosmopolitan", "definition": "(adj.) worldly or sophisticated; cultured, global"}, {"term": "counteract", "definition": "(v.) to oppose or neutralize; offset, counterbalance"}, {"term": "coup", "definition": "(n.) a sudden takeover; overthrow, rebellion"}, {"term": "covert", "definition": "(adj.) secret or hidden; concealed, undercover"}, {"term": "covet", "definition": "(v.) to desire wrongfully; crave, envy"}, {"term": "credulity", "definition": "(n.) readiness to believe; gullibility, naivety"}, {"term": "crescendo", "definition": "(n.) a gradual increase in intensity; climax, buildup"}, {"term": "criteria", "definition": "(n.) standards by which something is judged; benchmarks, requirements"}, {"term": "culmination", "definition": "(n.) the peak or final result; climax, conclusion"}, {"term": "culpable", "definition": "(adj.) deserving blame; guilty, responsible"}, {"term": "cultivate", "definition": "(v.) to grow or develop; nurture, foster"}, {"term": "cumulative", "definition": "(adj.) increasing or growing over time; collective, total"}, {"term": "cunning", "definition": "(adj.) sly or clever; crafty, shrewd"}, {"term": "cupidity", "definition": "(n.) greed for money or possessions; avarice, materialism"}, {"term": "cursory", "definition": "(adj.) quick and superficial; brief, hasty"}, {"term": "curt", "definition": "(adj.) rudely brief; blunt, abrupt"}, {"term": "curtail", "definition": "(v.) to cut short or reduce; limit, diminish"}, {"term": "daunting", "definition": "(adj.) intimidating or overwhelming; discouraging, disheartening"}, {"term": "dearth", "definition": "(n.) a lack or scarcity; shortage, deficiency"}, {"term": "debacle", "definition": "(n.) a sudden failure; disaster, fiasco"}, {"term": "debase", "definition": "(v.) to lower in value or dignity; degrade, cheapen"}, {"term": "debauch", "definition": "(v.) to corrupt morally; seduce, deprave"}, {"term": "debunk", "definition": "(v.) to expose as false; disprove, refute"}, {"term": "deceptive", "definition": "(adj.) misleading or dishonest; false, deceitful"}, {"term": "decisive", "definition": "(adj.) conclusive or determined; resolute, firm"}, {"term": "decorous", "definition": "(adj.) proper and polite; respectful, civilized"}, {"term": "decry", "definition": "(v.) to criticize openly; condemn, denounce"}, {"term": "deface", "definition": "(v.) to damage the surface of; vandalize, mar"}, {"term": "defamatory", "definition": "(adj.) harmful to someone's reputation; slanderous, libelous"}, {"term": "defer", "definition": "(v.) to postpone or yield to another; delay, submit"}, {"term": "deferential", "definition": "(adj.) showing respect or submission; respectful, humble"}, {"term": "defied", "definition": "(v.) resisted or opposed; challenged, disobeyed"}, {"term": "defile", "definition": "(v.) to pollute or corrupt; sully, taint"}, {"term": "deft", "definition": "(adj.) skillful or quick; nimble, adept"}, {"term": "defunct", "definition": "(adj.) no longer existing or functioning; obsolete, extinct"}, {"term": "delegate", "definition": "(v.) to assign duties or authority; entrust, appoint"}, {"term": "deleterious", "definition": "(adj.) harmful or damaging; injurious, detrimental"}, {"term": "deliberate", "definition": "(adj.) done on purpose; intentional, calculated"}, {"term": "delineate", "definition": "(v.) to describe or outline clearly; define, portray"}, {"term": "demagogue", "definition": "(n.) a leader who appeals to emotions and prejudice; agitator, firebrand"}, {"term": "demarcation", "definition": "(n.) a boundary or distinction; separation, division"}, {"term": "demean", "definition": "(v.) to lower in dignity or standing; degrade, humiliate"}, {"term": "demure", "definition": "(adj.) modest and reserved; shy, timid"}, {"term": "denigrate", "definition": "(v.) to criticize unfairly; belittle, defame"}, {"term": "denounce", "definition": "(v.) to publicly condemn; criticize, censure"}, {"term": "depleted", "definition": "(adj.) used up or emptied; drained, exhausted"}, {"term": "deplore", "definition": "(v.) to express strong disapproval; regret, lament"}, {"term": "depravity", "definition": "(n.) moral corruption; wickedness, evil"}, {"term": "deprecate", "definition": "(v.) to express disapproval of; criticize, belittle"}, {"term": "derelict", "definition": "(adj.) abandoned or neglected; run-down, dilapidated"}, {"term": "deride", "definition": "(v.) to mock or ridicule; scorn, taunt"}, {"term": "derivative", "definition": "(adj.) unoriginal or copied; imitative, uninspired"}, {"term": "derived from", "definition": "(v.) obtained or taken from; sourced, extracted"}, {"term": "desecrate", "definition": "(v.) to violate something sacred; defile, profane"}, {"term": "desiccated", "definition": "(adj.) dried out or lifeless; dehydrated, arid"}, {"term": "desolate", "definition": "(adj.) empty and bleak; barren, abandoned"}, {"term": "despondent", "definition": "(adj.) hopeless or depressed; disheartened, downcast"}, {"term": "despot", "definition": "(n.) a ruler with absolute power; tyrant, dictator"}, {"term": "destitute", "definition": "(adj.) extremely poor; impoverished, needy"}, {"term": "deter", "definition": "(v.) to discourage or prevent; hinder, dissuade"}, {"term": "deviates", "definition": "(v.) strays from a path or standard; diverges, departs"}, {"term": "devious", "definition": "(adj.) dishonest or tricky; deceitful, underhanded"}, {"term": "dialect", "definition": "(n.) a regional form of a language; vernacular, idiom"}, {"term": "diaphanous", "definition": "(adj.) light and delicate; sheer, translucent"}, {"term": "didactic", "definition": "(adj.) intended to teach; instructive, moralistic"}, {"term": "diffident", "definition": "(adj.) shy or lacking confidence; timid, hesitant"}, {"term": "diffuse", "definition": "(v.) to spread widely; disperse, scatter"}, {"term": "dilatory", "definition": "(adj.) slow or delaying; sluggish, procrastinating"}, {"term": "diligent", "definition": "(adj.) hardworking and careful; industrious, thorough"}, {"term": "diminutive", "definition": "(adj.) extremely small; tiny, petite"}, {"term": "dirge", "definition": "(n.) a funeral song; lament, elegy"}, {"term": "disaffected", "definition": "(adj.) dissatisfied or rebellious; alienated, discontent"}, {"term": "disavow", "definition": "(v.) to deny responsibility or support; reject, disclaim"}, {"term": "discern", "definition": "(v.) to recognize or detect; perceive, notice"}, {"term": "disclose", "definition": "(v.) to reveal or make known; divulge, share"}, {"term": "discomfit", "definition": "(v.) to embarrass or confuse; unsettle, fluster"}, {"term": "disconcerting", "definition": "(adj.) causing unease or confusion; unsettling, troubling"}, {"term": "discordant", "definition": "(adj.) lacking harmony; jarring, clashing"}, {"term": "discrepancy", "definition": "(n.) a lack of agreement; inconsistency, difference"}, {"term": "discretion", "definition": "(n.) careful judgment or freedom to decide; prudence, choice"}, {"term": "discursive", "definition": "(adj.) rambling or unfocused; digressive, wordy"}, {"term": "disdain", "definition": "(n.) contempt or scorn; disgust, disrespect"}, {"term": "disgruntled", "definition": "(adj.) dissatisfied or unhappy; annoyed, resentful"}, {"term": "disheartened", "definition": "(adj.) discouraged or demoralized; dispirited, dejected"}, {"term": "disorienting", "definition": "(adj.) confusing or unsettling; bewildering, puzzling"}, {"term": "disparage", "definition": "(v.) to speak negatively about; belittle, insult"}, {"term": "disparate", "definition": "(adj.) fundamentally different; distinct, unrelated"}, {"term": "dispatch", "definition": "(v.) to send off quickly; transmit, deliver"}, {"term": "dispel", "definition": "(v.) to drive away or eliminate; dismiss, scatter"}, {"term": "disperse", "definition": "(v.) to scatter or spread; distribute, diffuse"}, {"term": "disrepute", "definition": "(n.) a state of disgrace or low regard; dishonor, shame"}, {"term": "dissemble", "definition": "(v.) to hide true feelings; pretend, feign"}, {"term": "disseminate", "definition": "(v.) to spread widely; broadcast, circulate"}, {"term": "dissent", "definition": "(n.) disagreement or opposition; protest, objection"}, {"term": "dissipate", "definition": "(v.) to scatter or vanish; dissolve, disappear"}, {"term": "dissonance", "definition": "(n.) lack of harmony or agreement; conflict, discord"}, {"term": "dissuade", "definition": "(v.) to persuade not to do something; deter, discourage"}, {"term": "distend", "definition": "(v.) to expand or swell; bulge, enlarge"}, {"term": "dither", "definition": "(v.) to hesitate or be indecisive; waver, falter"}, {"term": "diverge", "definition": "(v.) to move apart or differ; separate, deviate"}, {"term": "diverse", "definition": "(adj.) showing variety; different, varied"}, {"term": "divine", "definition": "(adj.) relating to a god or heavenly being; sacred, holy"}, {"term": "divisive", "definition": "(adj.) causing disagreement or division; polarizing, controversial"}, {"term": "divulge", "definition": "(v.) to make known; reveal, disclose"}, {"term": "docile", "definition": "(adj.) easily taught or managed; obedient, submissive"}, {"term": "dogmatic", "definition": "(adj.) stubbornly opinionated; rigid, inflexible"}, {"term": "dormant", "definition": "(adj.) inactive or asleep; resting, latent"}, {"term": "dour", "definition": "(adj.) stern and gloomy; severe, sullen"}, {"term": "dubious", "definition": "(adj.) doubtful or questionable; uncertain, suspicious"}, {"term": "duplicity", "definition": "(n.) deceitfulness or double-dealing; dishonesty, fraud"}, {"term": "duress", "definition": "(n.) threats or pressure; coercion, force"}, {"term": "dynamic", "definition": "(adj.) energetic and constantly changing; active, lively"}, {"term": "ebullient", "definition": "(adj.) cheerful and full of energy; enthusiastic, exuberant"}, {"term": "eclectic", "definition": "(adj.) drawn from various sources; diverse, varied"}, {"term": "eclipses", "definition": "(v.) overshadows or surpasses; obscures, outshines"}, {"term": "ecstatic", "definition": "(adj.) extremely happy; thrilled, overjoyed"}, {"term": "edict", "definition": "(n.) an official order or proclamation; decree, mandate"}, {"term": "efface", "definition": "(v.) to erase or wipe out; remove, obliterate"}, {"term": "effervescent", "definition": "(adj.) lively and enthusiastic; bubbly, spirited"}, {"term": "efficacious", "definition": "(adj.) effective and efficient; successful, potent"}, {"term": "effrontery", "definition": "(n.) bold and rude behavior; audacity, impudence"}, {"term": "effulgent", "definition": "(adj.) radiant or shining brightly; luminous, glowing"}, {"term": "egregious", "definition": "(adj.) remarkably bad; shocking, outrageous"}, {"term": "elaborate", "definition": "(adj.) detailed and complicated; intricate, ornate"}, {"term": "elated", "definition": "(adj.) extremely happy; joyful, ecstatic"}, {"term": "elegy", "definition": "(n.) a poem for the dead; lament, dirge"}, {"term": "elicit", "definition": "(v.) to draw out or bring forth; evoke, extract"}, {"term": "eloquent", "definition": "(adj.) persuasive and expressive in speech; articulate, fluent"}, {"term": "elucidate", "definition": "(v.) to make clear or explain; clarify, illuminate"}, {"term": "elude", "definition": "(v.) to escape or avoid; evade, dodge"}, {"term": "elusive", "definition": "(adj.) difficult to find or catch; slippery, intangible"}, {"term": "emaciated", "definition": "(adj.) extremely thin or weak; gaunt, skeletal"}, {"term": "embellish", "definition": "(v.) to decorate or add details; adorn, exaggerate"}, {"term": "embezzle", "definition": "(v.) to steal money from one's trust; misappropriate, siphon"}, {"term": "emend", "definition": "(v.) to correct or revise; edit, alter"}, {"term": "eminent", "definition": "(adj.) famous and respected; distinguished, renowned"}, {"term": "emollient", "definition": "(adj.) soothing or softening; moisturizing, calming"}, {"term": "emote", "definition": "(v.) to express emotions dramatically; act, display"}, {"term": "empathy", "definition": "(n.) the ability to understand others' feelings; compassion, understanding"}, {"term": "empirical", "definition": "(adj.) based on observation or experience; experimental, factual"}, {"term": "emulate", "definition": "(v.) to imitate or strive to equal; copy, mimic"}, {"term": "enamor", "definition": "(v.) to be filled with love for; captivate, enchant"}, {"term": "encore", "definition": "(n.) a repeated performance; return, repetition"}, {"term": "encumber", "definition": "(v.) to burden or weigh down; hinder, obstruct"}, {"term": "enervate", "definition": "(v.) to weaken or drain energy; exhaust, debilitate"}, {"term": "enfranchise", "definition": "(v.) to give voting rights; empower, liberate"}, {"term": "engender", "definition": "(v.) to cause or give rise to; generate, provoke"}, {"term": "engulfs", "definition": "(v.) to swallow up or overwhelm; consume, flood"}, {"term": "enigmatic", "definition": "(adj.) mysterious or puzzling; cryptic, obscure"}, {"term": "enmity", "definition": "(n.) hatred or hostility; animosity, antagonism"}, {"term": "ennui", "definition": "(n.) boredom from lack of interest; weariness, tedium"}, {"term": "entail", "definition": "(v.) to involve or require; include, necessitate"}, {"term": "enthrall", "definition": "(v.) to captivate or fascinate; enchant, mesmerize"}, {"term": "entrenching", "definition": "(v.) establishing firmly; securing, embedding"}, {"term": "ephemeral", "definition": "(adj.) lasting a very short time; fleeting, brief"}, {"term": "epistolary", "definition": "(adj.) relating to letters or letter writing; written, correspondent"}, {"term": "epitome", "definition": "(n.) a perfect example; embodiment, archetype"}, {"term": "equanimity", "definition": "(n.) calmness under pressure; composure, serenity"}, {"term": "equivocate", "definition": "(v.) to speak ambiguously or avoid the truth; hedge, evade"}, {"term": "erudite", "definition": "(adj.) having deep scholarly knowledge; learned, educated"}, {"term": "eschew", "definition": "(v.) to deliberately avoid; shun, abstain"}, {"term": "esoteric", "definition": "(adj.) understood by a select few; obscure, cryptic"}, {"term": "espouse", "definition": "(v.) to support or adopt; embrace, advocate"}, {"term": "ethereal", "definition": "(adj.) light and delicate; airy, heavenly"}, {"term": "etymology", "definition": "(n.) origin and history of words; word source, derivation"}, {"term": "euphoric", "definition": "(adj.) extremely happy; elated, overjoyed"}, {"term": "evanescent", "definition": "(adj.) quickly fading or disappearing; fleeting, short-lived"}, {"term": "evince", "definition": "(v.) to show clearly; reveal, display"}, {"term": "exacerbate", "definition": "(v.) to make worse; aggravate, intensify"}, {"term": "exalt", "definition": "(v.) to praise highly; glorify, honor"}, {"term": "exasperate", "definition": "(v.) to irritate or annoy greatly; infuriate, provoke"}, {"term": "excavate", "definition": "(v.) to dig up or uncover; unearth, extract"}, {"term": "exculpate", "definition": "(v.) to clear from blame; absolve, acquit"}, {"term": "excursion", "definition": "(n.) a short trip or outing; journey, expedition"}, {"term": "execrable", "definition": "(adj.) extremely bad; appalling, awful"}, {"term": "exhort", "definition": "(v.) to strongly urge; encourage, implore"}, {"term": "exigent", "definition": "(adj.) requiring immediate attention; urgent, pressing"}, {"term": "exonerate", "definition": "(v.) to free from blame or guilt; absolve, acquit"}, {"term": "exorbitant", "definition": "(adj.) unreasonably high; excessive, outrageous"}, {"term": "expedient", "definition": "(adj.) convenient and practical; advantageous, effective"}, {"term": "expiate", "definition": "(v.) to make amends for; atone, redress"}, {"term": "expunge", "definition": "(v.) to erase or remove; delete, obliterate"}, {"term": "expurgate", "definition": "(v.) to censor or clean up; edit, sanitize"}, {"term": "extant", "definition": "(adj.) still existing; surviving, present"}, {"term": "extol", "definition": "(v.) to praise highly; exalt, laud"}, {"term": "extraneous", "definition": "(adj.) irrelevant or unnecessary; unrelated, superfluous"}, {"term": "extricate", "definition": "(v.) to free from difficulty; disentangle, extract"}, {"term": "exult", "definition": "(v.) to rejoice greatly; celebrate, cheer"}, {"term": "fabricate", "definition": "(v.) to invent or lie; falsify, concoct"}, {"term": "façade", "definition": "(n.) a false appearance; front, disguise"}, {"term": "facile", "definition": "(adj.) superficial or easily achieved; simplistic, effortless"}, {"term": "fallacious", "definition": "(adj.) misleading or false; incorrect, illogical"}, {"term": "fastidious", "definition": "(adj.) very attentive to detail; meticulous, fussy"}, {"term": "fathom", "definition": "(v.) to understand fully; grasp, comprehend"}, {"term": "fatuous", "definition": "(adj.) silly or foolish; absurd, inane"}, {"term": "fecund", "definition": "(adj.) fertile or productive; fruitful, prolific"}, {"term": "felicitous", "definition": "(adj.) well-suited or pleasant; fitting, appropriate"}, {"term": "feral", "definition": "(adj.) wild or untamed; savage, untamed"}, {"term": "fervent", "definition": "(adj.) passionate or intense; ardent, zealous"}, {"term": "fetid", "definition": "(adj.) foul-smelling; stinky, putrid"}, {"term": "fetter", "definition": "(v.) to restrain or chain; shackle, bind"}, {"term": "fickle", "definition": "(adj.) changing frequently; inconsistent, capricious"}, {"term": "fidelity", "definition": "(n.) loyalty or faithfulness; devotion, allegiance"}, {"term": "figurative", "definition": "(adj.) symbolic, not literal; metaphorical, poetic"}, {"term": "flabbergasted", "definition": "(adj.) extremely surprised; shocked, astonished"}, {"term": "flaccid", "definition": "(adj.) soft or limp; weak, loose"}, {"term": "flagrant", "definition": "(adj.) obviously offensive; blatant, outrageous"}, {"term": "fleeting", "definition": "(adj.) lasting a short time; brief, momentary"}, {"term": "florid", "definition": "(adj.) excessively fancy or flowery; ornate, embellished"}, {"term": "flout", "definition": "(v.) to openly disregard; defy, mock"}, {"term": "foil", "definition": "(v.) to prevent or stop; thwart, hinder"}, {"term": "forage", "definition": "(v.) to search for food or supplies; scavenge, hunt"}, {"term": "forbearance", "definition": "(n.) patient self-control; restraint, tolerance"}, {"term": "forestall", "definition": "(v.) to prevent by acting early; avert, preempt"}, {"term": "foretells", "definition": "(v.) predicts or announces beforehand; forecasts, prophesies"}, {"term": "forfeiture of", "definition": "(n.) loss of something as a penalty; surrender, deprivation"}, {"term": "forlorn", "definition": "(adj.) sad and abandoned; hopeless, desolate"}, {"term": "forsake", "definition": "(v.) to abandon or give up; desert, renounce"}, {"term": "fortitude", "definition": "(n.) courage in adversity; bravery, resilience"}, {"term": "fortuitous", "definition": "(adj.) happening by chance; lucky, accidental"}, {"term": "forum", "definition": "(n.) a place for discussion; assembly, meeting"}, {"term": "foster", "definition": "(v.) to promote or encourage; nurture, support"}, {"term": "fractious", "definition": "(adj.) irritable and quarrelsome; unruly, grumpy"}, {"term": "fraught", "definition": "(adj.) full of something (usually bad); filled, laden"}, {"term": "frenetic", "definition": "(adj.) wildly energetic or frantic; hectic, chaotic"}, {"term": "frivolous", "definition": "(adj.) not serious or important; trivial, silly"}, {"term": "frugal", "definition": "(adj.) economical or thrifty; sparing, prudent"}, {"term": "fruitless", "definition": "(adj.) unproductive or unsuccessful; futile, pointless"}, {"term": "furtive", "definition": "(adj.) secretive or stealthy; sneaky, sly"}, {"term": "garish", "definition": "(adj.) overly bright or showy; flashy, gaudy"}, {"term": "garrulous", "definition": "(adj.) excessively talkative; chatty, loquacious"}, {"term": "genial", "definition": "(adj.) friendly and cheerful; warm, pleasant"}, {"term": "gluttony", "definition": "(n.) overindulgence in food or drink; greed, overeating"}, {"term": "goad", "definition": "(v.) to provoke or urge; prod, incite"}, {"term": "gourmand", "definition": "(n.) a person who enjoys eating; foodie, epicure"}, {"term": "grandiloquence", "definition": "(n.) pompous or lofty speech; rhetoric, bombast"}, {"term": "grandiose", "definition": "(adj.) impressive but overblown; extravagant, pretentious"}, {"term": "grapple with", "definition": "(v.) to struggle or deal with; wrestle, confront"}, {"term": "gratuitous", "definition": "(adj.) uncalled for or excessive; unnecessary, unwarranted"}, {"term": "gregarious", "definition": "(adj.) sociable or outgoing; friendly, extroverted"}, {"term": "grievous", "definition": "(adj.) serious or severe; tragic, grave"}, {"term": "guile", "definition": "(n.) sly or cunning intelligence; deceit, trickery"}, {"term": "hackneyed", "definition": "(adj.) overused and unoriginal; clichéd, stale"}, {"term": "hallowed", "definition": "(adj.) greatly respected or sacred; revered, holy"}, {"term": "haphazard", "definition": "(adj.) lacking order or purpose; random, chaotic"}, {"term": "hapless", "definition": "(adj.) unlucky or unfortunate; jinxed, ill-fated"}, {"term": "harangue", "definition": "(n.) a loud, aggressive speech; rant, tirade"}, {"term": "hardy", "definition": "(adj.) strong and able to endure; tough, robust"}, {"term": "harrowing", "definition": "(adj.) extremely distressing or painful; traumatic, disturbing"}, {"term": "hastily", "definition": "(adv.) done quickly and carelessly; rashly, hurriedly"}, {"term": "haughty", "definition": "(adj.) arrogantly superior; proud, snobbish"}, {"term": "hedonist", "definition": "(n.) one who pursues pleasure; pleasure-seeker, sensualist"}, {"term": "hegemony", "definition": "(n.) dominance or leadership; control, supremacy"}, {"term": "heinous", "definition": "(adj.) shockingly wicked; evil, atrocious"}, {"term": "hence", "definition": "(adv.) for this reason; therefore, thus"}, {"term": "heterogeneous", "definition": "(adj.) diverse in content; mixed, varied"}, {"term": "hiatus", "definition": "(n.) a pause or break; interruption, gap"}, {"term": "hibernation", "definition": "(n.) a period of inactivity; dormancy, rest"}, {"term": "hierarchy", "definition": "(n.) a system of ranks or levels; order, chain of command"}, {"term": "hinder", "definition": "(v.) to slow down or obstruct; impede, delay"}, {"term": "homogeneous", "definition": "(adj.) uniform or of the same kind; consistent, alike"}, {"term": "hypocrisy", "definition": "(n.) claiming moral standards without practice; insincerity, duplicity"}, {"term": "hypothetical", "definition": "(adj.) based on assumption; supposed, theoretical"}, {"term": "iconoclast", "definition": "(n.) one who attacks traditions; rebel, nonconformist"}, {"term": "idiosyncratic", "definition": "(adj.) peculiar or individualistic; quirky, unique"}, {"term": "idolatrous", "definition": "(adj.) worshipping blindly or excessively; adoring, devoted"}, {"term": "ignominious", "definition": "(adj.) deserving shame or disgrace; humiliating, dishonorable"}, {"term": "illicit", "definition": "(adj.) illegal or forbidden; unlawful, prohibited"}, {"term": "immerse", "definition": "(v.) to involve deeply or submerge; absorb, engage"}, {"term": "imminent", "definition": "(adj.) about to happen; approaching, impending"}, {"term": "immutable", "definition": "(adj.) unchangeable; fixed, permanent"}, {"term": "impartial", "definition": "(adj.) unbiased or fair; neutral, objective"}, {"term": "impassive", "definition": "(adj.) not showing emotion; expressionless, indifferent"}, {"term": "impeccable", "definition": "(adj.) flawless or perfect; spotless, pristine"}, {"term": "impecunious", "definition": "(adj.) having little or no money; poor, penniless"}, {"term": "impede", "definition": "(v.) to block or hinder; obstruct, delay"}, {"term": "impenetrable", "definition": "(adj.) impossible to pass through or understand; dense, incomprehensible"}, {"term": "imperative", "definition": "(adj.) absolutely necessary; essential, urgent"}, {"term": "imperceptible", "definition": "(adj.) barely noticeable; subtle, faint"}, {"term": "imperious", "definition": "(adj.) arrogantly commanding; overbearing, domineering"}, {"term": "impertinent", "definition": "(adj.) rude or disrespectful; impolite, insolent"}, {"term": "impervious", "definition": "(adj.) not affected by; resistant, immune"}, {"term": "impetuous", "definition": "(adj.) acting without thought; rash, impulsive"}, {"term": "impinge", "definition": "(v.) to intrude or encroach; affect, infringe"}, {"term": "implacable", "definition": "(adj.) unable to be calmed or satisfied; unyielding, relentless"}, {"term": "implement", "definition": "(v.) to put into effect; execute, apply"}, {"term": "implicate", "definition": "(v.) to involve in a crime or fault; associate, connect"}, {"term": "implicit", "definition": "(adj.) understood without being stated; implied, unspoken"}, {"term": "impostor", "definition": "(n.) a person who pretends to be someone else; fraud, fake"}, {"term": "impractical", "definition": "(adj.) not realistic or useful; unworkable, unrealistic"}, {"term": "impregnable", "definition": "(adj.) unable to be defeated or penetrated; secure, invincible"}, {"term": "improvise", "definition": "(v.) to create without preparation; ad-lib, invent"}, {"term": "impudent", "definition": "(adj.) disrespectful or rude; impertinent, cheeky"}, {"term": "impute", "definition": "(v.) to attribute or blame; assign, credit"}, {"term": "inane", "definition": "(adj.) silly or stupid; pointless, foolish"}, {"term": "inarticulate", "definition": "(adj.) unable to express clearly; tongue-tied, incoherent"}, {"term": "incarnate", "definition": "(adj.) embodied in human form; personified, embodied"}, {"term": "incendiary", "definition": "(adj.) designed to cause fires or conflict; inflammatory, provocative"}, {"term": "incessant", "definition": "(adj.) never stopping; constant, relentless"}, {"term": "inchoate", "definition": "(adj.) just begun; undeveloped, rudimentary"}, {"term": "incisive", "definition": "(adj.) sharp or clear in thought or expression; keen, insightful"}, {"term": "inclination", "definition": "(n.) a tendency or preference; leaning, propensity"}, {"term": "incontrovertible", "definition": "(adj.) not open to question; undeniable, indisputable"}, {"term": "incorrigible", "definition": "(adj.) unable to be corrected; hopeless, unreformable"}, {"term": "increment", "definition": "(n.) an increase or addition; rise, gain"}, {"term": "indecipherable", "definition": "(adj.) impossible to read or understand; unreadable, unintelligible"}, {"term": "indefatigable", "definition": "(adj.) never tired; tireless, relentless"}, {"term": "indigenous", "definition": "(adj.) native to a region; local, original"}, {"term": "indigent", "definition": "(adj.) poor or needy; impoverished, destitute"}, {"term": "indignation", "definition": "(n.) anger at unfairness; outrage, resentment"}, {"term": "indolent", "definition": "(adj.) lazy or avoiding effort; idle, sluggish"}, {"term": "indomitable", "definition": "(adj.) impossible to defeat; invincible, unconquerable"}, {"term": "induce", "definition": "(v.) to cause or persuade; prompt, bring about"}, {"term": "indulge", "definition": "(v.) to give in to a desire; pamper, satisfy"}, {"term": "ineffable", "definition": "(adj.) too great to be expressed; indescribable, overwhelming"}, {"term": "inept", "definition": "(adj.) lacking skill; clumsy, incompetent"}, {"term": "inexorable", "definition": "(adj.) impossible to stop or persuade; relentless, unyielding"}, {"term": "inexplicable", "definition": "(adj.) hard to explain; puzzling, mysterious"}, {"term": "inextricable", "definition": "(adj.) impossible to separate or untangle; inseparable, intertwined"}, {"term": "infallible", "definition": "(adj.) incapable of error; flawless, unerring"}, {"term": "infamy", "definition": "(n.) evil fame or reputation; notoriety, disgrace"}, {"term": "infusion", "definition": "(n.) the act of adding something; injection, addition"}, {"term": "ingenious", "definition": "(adj.) clever or original; inventive, brilliant"}, {"term": "ingenuous", "definition": "(adj.) innocent or naive; sincere, straightforward"}, {"term": "inhibit", "definition": "(v.) to restrain or prevent; hinder, block"}, {"term": "inimical", "definition": "(adj.) harmful or hostile; unfriendly, antagonistic"}, {"term": "iniquity", "definition": "(n.) immoral or unfair behavior; wickedness, sin"}, {"term": "injunction", "definition": "(n.) a legal order; directive, ruling"}, {"term": "innate", "definition": "(adj.) natural or inborn; inherent, instinctive"}, {"term": "innocuous", "definition": "(adj.) harmless or inoffensive; safe, mild"}, {"term": "innovative", "definition": "(adj.) new and creative; original, groundbreaking"}, {"term": "innuendo", "definition": "(n.) an indirect remark or hint; implication, suggestion"}, {"term": "inoculate", "definition": "(v.) to vaccinate or introduce something; immunize, inject"}, {"term": "inquisitor", "definition": "(n.) one who aggressively questions; interrogator, examiner"}, {"term": "insatiable", "definition": "(adj.) impossible to satisfy; greedy, ravenous"}, {"term": "insidious", "definition": "(adj.) harmful in a subtle way; sneaky, stealthy"}, {"term": "insinuate", "definition": "(v.) to suggest indirectly; imply, hint"}, {"term": "insipid", "definition": "(adj.) lacking flavor or interest; bland, dull"}, {"term": "insolent", "definition": "(adj.) boldly rude; disrespectful, impudent"}, {"term": "instigate", "definition": "(v.) to provoke or start something; incite, initiate"}, {"term": "insular", "definition": "(adj.) isolated or narrow-minded; closed, inward-looking"}, {"term": "insurgent", "definition": "(n.) one who rises in revolt; rebel, revolutionary"}, {"term": "integral", "definition": "(adj.) essential or necessary; fundamental, key"}, {"term": "interject", "definition": "(v.) to insert abruptly; interrupt, interpose"}, {"term": "interlocutor", "definition": "(n.) a person in a conversation; speaker, respondent"}, {"term": "interminable", "definition": "(adj.) endless or seeming so; never-ending, eternal"}, {"term": "intimation", "definition": "(n.) a hint or suggestion; indication, clue"}, {"term": "intractable", "definition": "(adj.) hard to control or deal with; stubborn, unmanageable"}, {"term": "intransigent", "definition": "(adj.) unwilling to compromise; inflexible, unyielding"}, {"term": "intrepid", "definition": "(adj.) fearless and adventurous; brave, bold"}, {"term": "intricate", "definition": "(adj.) very detailed or complex; elaborate, complicated"}, {"term": "intriguing", "definition": "(adj.) arousing curiosity or interest; fascinating, captivating"}, {"term": "inundate", "definition": "(v.) to overwhelm or flood; swamp, overload"}, {"term": "inure", "definition": "(v.) to accustom to something unpleasant; harden, habituate"}, {"term": "invalidate", "definition": "(v.) to make invalid; nullify, disprove"}, {"term": "invective", "definition": "(n.) harsh or abusive language; insult, condemnation"}, {"term": "inveterate", "definition": "(adj.) firmly established by habit; habitual, chronic"}, {"term": "inviolable", "definition": "(adj.) secure from violation; sacred, untouchable"}, {"term": "irascible", "definition": "(adj.) easily angered; irritable, hot-tempered"}, {"term": "iridescent", "definition": "(adj.) showing shifting colors; shimmering, lustrous"}, {"term": "irreverence", "definition": "(n.) lack of respect; disrespect, mockery"}, {"term": "irrevocable", "definition": "(adj.) cannot be changed; irreversible, final"}, {"term": "jubilant", "definition": "(adj.) extremely joyful; elated, ecstatic"}, {"term": "judicious", "definition": "(adj.) having good judgment; wise, prudent"}, {"term": "juxtaposition", "definition": "(n.) side-by-side placement; contrast, comparison"}, {"term": "knell", "definition": "(n.) sound of a bell (esp. for death); toll, omen"}, {"term": "kudos", "definition": "(n.) praise or recognition; acclaim, honor"}, {"term": "laceration", "definition": "(n.) deep cut or tear; wound, gash"}, {"term": "laconic", "definition": "(adj.) using few words; terse, concise"}, {"term": "languid", "definition": "(adj.) lacking energy; sluggish, weak"}, {"term": "larceny", "definition": "(n.) theft of personal property; robbery, stealing"}, {"term": "largess", "definition": "(n.) generosity in giving; charity, philanthropy"}, {"term": "latent", "definition": "(adj.) hidden but present; dormant, concealed"}, {"term": "laudatory", "definition": "(adj.) expressing praise; approving, admiring"}, {"term": "lavish", "definition": "(adj.) extravagant or generous; luxurious, excessive"}, {"term": "legerdemain", "definition": "(n.) skillful use of hands; sleight of hand, trickery"}, {"term": "lenient", "definition": "(adj.) not strict; permissive, forgiving"}, {"term": "lethargic", "definition": "(adj.) sluggish or tired; drowsy, inactive"}, {"term": "liability", "definition": "(n.) a disadvantage or responsibility; burden, obligation"}, {"term": "libertarian", "definition": "(n.) advocate of minimal government; individualist, free-marketeer"}, {"term": "licentious", "definition": "(adj.) lacking moral restraint; immoral, debauched"}, {"term": "limpid", "definition": "(adj.) clear or transparent; lucid, pure"}, {"term": "linchpin", "definition": "(n.) a key part of a system; anchor, foundation"}, {"term": "lithe", "definition": "(adj.) flexible and graceful; supple, agile"}, {"term": "litigant", "definition": "(n.) a person involved in a lawsuit; party, plaintiff/defendant"}, {"term": "lucid", "definition": "(adj.) clear and easy to understand; coherent, intelligible"}, {"term": "lucrative", "definition": "(adj.) producing profit; profitable, rewarding"}, {"term": "luminous", "definition": "(adj.) giving off light; radiant, glowing"}, {"term": "lurid", "definition": "(adj.) sensational or shocking; vivid, gruesome"}, {"term": "maelstrom", "definition": "(n.) a violent whirlpool or situation; chaos, turmoil"}, {"term": "magnanimous", "definition": "(adj.) generous and forgiving; noble, big-hearted"}, {"term": "malediction", "definition": "(n.) a curse or slander; damnation, hex"}, {"term": "malevolent", "definition": "(adj.) having ill will; evil, malicious"}, {"term": "malleable", "definition": "(adj.) easily shaped or influenced; flexible, adaptable"}, {"term": "mandate", "definition": "(n.) an official order or command; directive, instruction"}, {"term": "mandatory", "definition": "(adj.) required by rule or law; obligatory, compulsory"}, {"term": "manifold", "definition": "(adj.) many and varied; multiple, diverse"}, {"term": "maudlin", "definition": "(adj.) overly sentimental; sappy, tearful"}, {"term": "maverick", "definition": "(n.) an independent thinker; nonconformist, rebel"}, {"term": "mawkish", "definition": "(adj.) overly emotional; sentimental, mushy"}, {"term": "maxim", "definition": "(n.) a general truth or rule of conduct; proverb, saying"}, {"term": "meager", "definition": "(adj.) lacking in quantity; scanty, insufficient"}, {"term": "medley", "definition": "(n.) a mixture or assortment; blend, mix"}, {"term": "mendacious", "definition": "(adj.) dishonest or false; lying, deceitful"}, {"term": "mercurial", "definition": "(adj.) unpredictable or changeable; fickle, volatile"}, {"term": "meritorious", "definition": "(adj.) deserving praise; commendable, admirable"}, {"term": "metamorphosis", "definition": "(n.) a change in form or nature; transformation, evolution"}, {"term": "meticulous", "definition": "(adj.) very careful and precise; exact, thorough"}, {"term": "mimic", "definition": "(v.) to imitate closely; copy, impersonate"}, {"term": "mitigate", "definition": "(v.) to lessen the severity; ease, alleviate"}, {"term": "moderate", "definition": "(adj.) average in amount; mild, balanced"}, {"term": "moderation", "definition": "(n.) avoiding extremes; restraint, temperance"}, {"term": "modicum", "definition": "(n.) a small amount; bit, shred"}, {"term": "modulate", "definition": "(v.) to adjust or regulate; alter, adapt"}, {"term": "mollify", "definition": "(v.) to calm or soothe; appease, pacify"}, {"term": "morass", "definition": "(n.) a complicated or confused situation; mess, quagmire"}, {"term": "mores", "definition": "(n.) customs or values of a group; traditions, norms"}, {"term": "morose", "definition": "(adj.) gloomy or sullen; moody, glum"}, {"term": "multifaceted", "definition": "(adj.) having many aspects; complex, varied"}, {"term": "multifarious", "definition": "(adj.) diverse or varied; assorted, numerous"}, {"term": "mundane", "definition": "(adj.) ordinary or dull; routine, boring"}, {"term": "munificence", "definition": "(n.) great generosity; largess, bounty"}, {"term": "mutable", "definition": "(adj.) changeable or variable; shifting, inconsistent"}, {"term": "myriad", "definition": "(adj.) countless or extremely great in number; endless, infinite"}, {"term": "mystifying", "definition": "(adj.) puzzling or confusing; baffling, perplexing"}, {"term": "nadir", "definition": "(n.) the lowest point; bottom, rock-bottom"}, {"term": "nascent", "definition": "(adj.) beginning to exist; emerging, developing"}, {"term": "nebulous", "definition": "(adj.) vague or unclear; hazy, indistinct"}, {"term": "nefarious", "definition": "(adj.) wicked or evil; villainous, sinful"}, {"term": "negating", "definition": "(v.) to cancel out; invalidate, nullify"}, {"term": "neglects", "definition": "(v.) to fail to care for; ignore, disregard"}, {"term": "negligent", "definition": "(adj.) careless or inattentive; lax, remiss"}, {"term": "negligible", "definition": "(adj.) so small as to be unimportant; trivial, minor"}, {"term": "neophyte", "definition": "(n.) a beginner; novice, rookie"}, {"term": "neutrality", "definition": "(n.) the state of not supporting either side; impartiality, detachment"}, {"term": "nocturnal", "definition": "(adj.) active at night; nighttime, after-dark"}, {"term": "noisome", "definition": "(adj.) offensive or disgusting; foul, putrid"}, {"term": "nomadic", "definition": "(adj.) moving from place to place; wandering, roving"}, {"term": "nominal", "definition": "(adj.) in name only; minimal, symbolic"}, {"term": "nonchalant", "definition": "(adj.) casually unconcerned; indifferent, relaxed"}, {"term": "nondescript", "definition": "(adj.) lacking distinctive features; unremarkable, plain"}, {"term": "notorious", "definition": "(adj.) well-known for something bad; infamous, disreputable"}, {"term": "novel", "definition": "(adj.) new and original; innovative, fresh"}, {"term": "novice", "definition": "(n.) a beginner; trainee, learner"}, {"term": "noxious", "definition": "(adj.) harmful or poisonous; toxic, dangerous"}, {"term": "nuance", "definition": "(n.) a subtle difference; distinction, shade"}, {"term": "nurture", "definition": "(v.) to care for and support; foster, cultivate"}, {"term": "obdurate", "definition": "(adj.) stubborn and unyielding; inflexible, adamant"}, {"term": "obfuscate", "definition": "(v.) to confuse or make unclear; blur, obscure"}, {"term": "oblique", "definition": "(adj.) not direct or straightforward; indirect, evasive"}, {"term": "oblivious", "definition": "(adj.) unaware or unconscious; inattentive, ignorant"}, {"term": "obscure", "definition": "(adj.) not well known; hidden, unclear"}, {"term": "obsequious", "definition": "(adj.) overly flattering or submissive; fawning, servile"}, {"term": "obsolete", "definition": "(adj.) outdated or no longer used; archaic, antiquated"}, {"term": "obstinate", "definition": "(adj.) stubbornly refusing to change; headstrong, unyielding"}, {"term": "obstreperous", "definition": "(adj.) noisy and difficult to control; unruly, boisterous"}, {"term": "obtained from", "definition": "(v.) acquired or gathered; derived, sourced"}, {"term": "obtuse", "definition": "(adj.) slow to understand; dull, dense"}, {"term": "odious", "definition": "(adj.) extremely unpleasant; hateful, repugnant"}, {"term": "offered", "definition": "(v.) presented or provided; gave, proposed"}, {"term": "officious", "definition": "(adj.) overly eager to help or meddle; intrusive, meddlesome"}, {"term": "ominous", "definition": "(adj.) threatening or foreboding; menacing, sinister"}, {"term": "onerous", "definition": "(adj.) burdensome or difficult; oppressive, taxing"}, {"term": "operative", "definition": "(adj.) functioning or effective; working, active"}, {"term": "opulent", "definition": "(adj.) rich and luxurious; lavish, extravagant"}, {"term": "oration", "definition": "(n.) formal speech; address, lecture"}, {"term": "ornamental", "definition": "(adj.) decorative or pretty; fancy, embellished"}, {"term": "ornate", "definition": "(adj.) highly decorated; elaborate, intricate"}, {"term": "orthodox", "definition": "(adj.) traditional or established; conventional, standard"}, {"term": "oscillate", "definition": "(v.) to move back and forth; swing, fluctuate"}, {"term": "ostensible", "definition": "(adj.) appearing to be true, but not necessarily so; apparent, supposed"}, {"term": "ostentatious", "definition": "(adj.) showy or flashy; pretentious, flamboyant"}, {"term": "ostracism", "definition": "(n.) exclusion from a group; shunning, banishment"}, {"term": "pacific", "definition": "(adj.) peaceful or calm; tranquil, nonviolent"}, {"term": "palatable", "definition": "(adj.) pleasant to taste or accept; tasty, agreeable"}, {"term": "palette", "definition": "(n.) range of colors; selection, spectrum"}, {"term": "palliate", "definition": "(v.) to relieve without curing; soothe, alleviate"}, {"term": "pallid", "definition": "(adj.) pale or lacking color; wan, ashen"}, {"term": "panacea", "definition": "(n.) a universal cure; remedy, solution"}, {"term": "paradigm", "definition": "(n.) a model or example; pattern, standard"}, {"term": "paradox", "definition": "(n.) a self-contradictory statement; irony, inconsistency"}, {"term": "paragon", "definition": "(n.) a perfect example; model, ideal"}, {"term": "paramount", "definition": "(adj.) more important than anything else; supreme, primary"}, {"term": "pariah", "definition": "(n.) a social outcast; exile, outsider"}, {"term": "parody", "definition": "(n.) a humorous imitation; spoof, satire"}, {"term": "parsimony", "definition": "(n.) extreme stinginess; frugality, miserliness"}, {"term": "partisan", "definition": "(adj.) strongly supporting one side; biased, one-sided"}, {"term": "patent", "definition": "(adj.) obvious or evident; clear, unmistakable"}, {"term": "pathology", "definition": "(n.) the study of disease; diagnosis, medicine"}, {"term": "pathos", "definition": "(n.) emotion or pity; poignancy, sadness"}, {"term": "paucity", "definition": "(n.) scarcity or lack; shortage, deficiency"}, {"term": "pejorative", "definition": "(adj.) expressing disapproval; derogatory, insulting"}, {"term": "pellucid", "definition": "(adj.) transparently clear; lucid, understandable"}, {"term": "penchant", "definition": "(n.) a strong liking; preference, fondness"}, {"term": "penitent", "definition": "(adj.) feeling regretful; remorseful, sorry"}, {"term": "penultimate", "definition": "(adj.) second to last; next-to-last, almost final"}, {"term": "penurious", "definition": "(adj.) extremely poor; destitute, impoverished"}, {"term": "perceive", "definition": "(v.) to become aware of; notice, observe"}, {"term": "perfidious", "definition": "(adj.) disloyal or treacherous; deceitful, unfaithful"}, {"term": "perfunctory", "definition": "(adj.) done without care; mechanical, indifferent"}, {"term": "peripheral", "definition": "(adj.) on the edge or outer part; marginal, bordering"}, {"term": "permeate", "definition": "(v.) to spread throughout; fill, infiltrate"}, {"term": "pernicious", "definition": "(adj.) harmful in a subtle way; destructive, dangerous"}, {"term": "perplex", "definition": "(v.) to confuse or puzzle; baffle, bewilder"}, {"term": "persistent", "definition": "(adj.) continuing despite difficulty; determined, tenacious"}, {"term": "perspicacity", "definition": "(n.) insight or sharpness; discernment, perception"}, {"term": "pert", "definition": "(adj.) bold and lively; cheeky, saucy"}, {"term": "pertinacious", "definition": "(adj.) holding firmly to an idea; stubborn, determined"}, {"term": "perusal", "definition": "(n.) a close reading or examination; inspection, review"}, {"term": "pervasive", "definition": "(adj.) spreading widely; widespread, all-encompassing"}, {"term": "petulance", "definition": "(n.) rudeness or irritability; sulkiness, peevishness"}, {"term": "philanthropic", "definition": "(adj.) generous to others; charitable, benevolent"}, {"term": "phlegmatic", "definition": "(adj.) unemotional and calm; indifferent, composed"}, {"term": "pillage", "definition": "(v.) to rob using violence; plunder, loot"}, {"term": "pinnacle", "definition": "(n.) the highest point; peak, summit"}, {"term": "pithy", "definition": "(adj.) brief but meaningful; concise, terse"}, {"term": "pittance", "definition": "(n.) a very small amount; trifle, scrap"}, {"term": "placate", "definition": "(v.) to calm or appease; soothe, pacify"}, {"term": "placid", "definition": "(adj.) calm and peaceful; serene, tranquil"}, {"term": "platitude", "definition": "(n.) a dull or overused remark; cliché, truism"}, {"term": "plaudits", "definition": "(n.) praise or applause; acclaim, cheers"}, {"term": "plausible", "definition": "(adj.) seeming reasonable; believable, likely"}, {"term": "plenitude", "definition": "(n.) abundance or fullness; plenty, profusion"}, {"term": "plethora", "definition": "(n.) an excess or overabundance; surplus, flood"}, {"term": "pliable", "definition": "(adj.) easily bent or influenced; flexible, adaptable"}, {"term": "poignant", "definition": "(adj.) emotionally touching; moving, stirring"}, {"term": "polemic", "definition": "(n.) a strong verbal attack; tirade, rant"}, {"term": "portent", "definition": "(n.) a sign of something to come; omen, warning"}, {"term": "potable", "definition": "(adj.) safe to drink; drinkable, clean"}, {"term": "potentate", "definition": "(n.) a ruler or monarch; sovereign, leader"}, {"term": "pragmatic", "definition": "(adj.) practical and realistic; sensible, rational"}, {"term": "precarious", "definition": "(adj.) dangerously unstable; uncertain, risky"}, {"term": "precipice", "definition": "(n.) a steep cliff; brink, edge"}, {"term": "preclude", "definition": "(v.) to make impossible; prevent, block"}, {"term": "precocious", "definition": "(adj.) advanced for one's age; gifted, talented"}, {"term": "precursors of", "definition": "(n.) forerunners or indicators; predecessors, harbingers"}, {"term": "predatory", "definition": "(adj.) seeking to exploit or harm; aggressive, ravenous"}, {"term": "predilection", "definition": "(n.) a preference or liking; fondness, bias"}, {"term": "prefiguring", "definition": "(v.) foreshadowing or predicting; anticipating, signaling"}, {"term": "premeditated", "definition": "(adj.) planned beforehand; deliberate, intentional"}, {"term": "preponderance", "definition": "(n.) majority or dominance; prevalence, bulk"}, {"term": "prepossessing", "definition": "(adj.) attractive or appealing; charming, engaging"}, {"term": "presage", "definition": "(v.) to predict or foreshadow; foretell, herald"}, {"term": "prescient", "definition": "(adj.) having foresight; prophetic, insightful"}, {"term": "prescribe", "definition": "(v.) to recommend or authorize; order, advise"}, {"term": "prestige", "definition": "(n.) respect or admiration; status, esteem"}, {"term": "presume", "definition": "(v.) to suppose without proof; assume, speculate"}, {"term": "presumptuous", "definition": "(adj.) overly bold or forward; arrogant, impudent"}, {"term": "pretense", "definition": "(n.) a false show or claim; act, sham"}, {"term": "pretentious", "definition": "(adj.) acting more important than warranted; showy, pompous"}, {"term": "prevail", "definition": "(v.) to win or dominate; triumph, succeed"}, {"term": "primeval", "definition": "(adj.) ancient or primitive; prehistoric, primordial"}, {"term": "privation", "definition": "(n.) lack of basic needs; hardship, deprivation"}, {"term": "probity", "definition": "(n.) honesty and integrity; uprightness, virtue"}, {"term": "proclaims", "definition": "(v.) announces or declares; states, broadcasts"}, {"term": "proclivity", "definition": "(n.) a natural tendency; inclination, bias"}, {"term": "procure", "definition": "(v.) to obtain or acquire; secure, get"}, {"term": "profane", "definition": "(adj.) disrespectful toward sacred things; irreverent, blasphemous"}, {"term": "proficient", "definition": "(adj.) skilled and competent; capable, adept"}, {"term": "profligate", "definition": "(adj.) wasteful or reckless; extravagant, spendthrift"}, {"term": "profound", "definition": "(adj.) deep or intense; meaningful, thoughtful"}, {"term": "profuse", "definition": "(adj.) abundant or excessive; plentiful, lavish"}, {"term": "prolific", "definition": "(adj.) highly productive; fruitful, creative"}, {"term": "promulgate", "definition": "(v.) to make known officially; declare, proclaim"}, {"term": "propagate", "definition": "(v.) to spread or promote; transmit, disseminate"}, {"term": "propensity", "definition": "(n.) a natural inclination; tendency, leaning"}, {"term": "propitious", "definition": "(adj.) favorable or promising; auspicious, advantageous"}, {"term": "proponent of", "definition": "(n.) one who supports a cause; advocate, supporter"}, {"term": "propriety", "definition": "(n.) proper behavior; decorum, etiquette"}, {"term": "prosaic", "definition": "(adj.) dull or unimaginative; boring, mundane"}, {"term": "proscribe", "definition": "(v.) to forbid or ban; prohibit, outlaw"}, {"term": "protean", "definition": "(adj.) versatile or changeable; adaptable, variable"}, {"term": "prowess", "definition": "(n.) great skill or ability; expertise, mastery"}, {"term": "prudence", "definition": "(n.) caution or wisdom; good judgment, foresight"}, {"term": "prurient", "definition": "(adj.) having lustful thoughts; lewd, salacious"}, {"term": "puerile", "definition": "(adj.) childish or silly; immature, juvenile"}, {"term": "pugnacious", "definition": "(adj.) eager to fight; combative, aggressive"}, {"term": "pulchritude", "definition": "(n.) physical beauty; loveliness, attractiveness"}, {"term": "punctilious", "definition": "(adj.) extremely attentive to detail; meticulous, precise"}, {"term": "pungent", "definition": "(adj.) having a strong smell or taste; sharp, acrid"}, {"term": "punitive", "definition": "(adj.) inflicting punishment; disciplinary, penal"}, {"term": "putrid", "definition": "(adj.) rotten and foul-smelling; decaying, rancid"}, {"term": "quagmire", "definition": "(n.) a difficult or messy situation; dilemma, predicament"}, {"term": "quaint", "definition": "(adj.) charmingly old-fashioned; picturesque, antique"}, {"term": "quandary", "definition": "(n.) a state of uncertainty; dilemma, confusion"}, {"term": "quell", "definition": "(v.) to suppress or put an end to; subdue, crush"}, {"term": "querulous", "definition": "(adj.) complaining or whining; grumbling, petulant"}, {"term": "quixotic", "definition": "(adj.) unrealistic and idealistic; impractical, dreamy"}, {"term": "quotidian", "definition": "(adj.) occurring daily; routine, everyday"}, {"term": "rail", "definition": "(v.) to criticize harshly; rant, berate"}, {"term": "rancid", "definition": "(adj.) having a rotten smell or taste; spoiled, foul"}, {"term": "rancor", "definition": "(n.) bitterness or resentment; hatred, animosity"}, {"term": "rapport", "definition": "(n.) a positive relationship; bond, connection"}, {"term": "rash", "definition": "(adj.) reckless or hasty; impulsive, careless"}, {"term": "raucous", "definition": "(adj.) loud and disorderly; boisterous, rowdy"}, {"term": "raze", "definition": "(v.) to completely destroy; demolish, flatten"}, {"term": "rebuke", "definition": "(v.) to criticize sharply; reprimand, scold"}, {"term": "rebuts", "definition": "(v.) to refute or disprove; contradict, oppose"}, {"term": "recalcitrant", "definition": "(adj.) stubbornly disobedient; defiant, uncooperative"}, {"term": "recants", "definition": "(v.) to withdraw a statement; retract, take back"}, {"term": "recapitulate", "definition": "(v.) to summarize; restate, review"}, {"term": "reciprocate", "definition": "(v.) to return a favor or feeling; repay, respond"}, {"term": "reclusive", "definition": "(adj.) avoiding the company of others; solitary, withdrawn"}, {"term": "reconcile", "definition": "(v.) to restore harmony; settle, reunite"}, {"term": "rectitude", "definition": "(n.) moral uprightness; integrity, righteousness"}, {"term": "redoubtable", "definition": "(adj.) worthy of fear or respect; formidable, intimidating"}, {"term": "redundant", "definition": "(adj.) unnecessary or repetitive; superfluous, excessive"}, {"term": "refract", "definition": "(v.) to bend light or sound; deflect, distort"}, {"term": "refurbish", "definition": "(v.) to renovate or restore; update, renew"}, {"term": "refute", "definition": "(v.) to prove wrong; disprove, rebut"}, {"term": "regret", "definition": "(v.) to feel remorse; lament, rue"}, {"term": "regulate", "definition": "(v.) to control or govern; manage, oversee"}, {"term": "regurgitate", "definition": "(v.) to repeat without understanding; echo, spit back"}, {"term": "relegate", "definition": "(v.) to assign to a lower position; demote, downgrade"}, {"term": "relish", "definition": "(v.) to enjoy greatly; savor, delight in"}, {"term": "remedial", "definition": "(adj.) intended to improve skills; corrective, therapeutic"}, {"term": "remiss", "definition": "(adj.) negligent or careless; inattentive, lax"}, {"term": "renounce", "definition": "(v.) to give up or reject; abandon, disown"}, {"term": "renovate", "definition": "(v.) to restore or improve; refurbish, renew"}, {"term": "renown", "definition": "(n.) fame or recognition; glory, distinction"}, {"term": "renunciation", "definition": "(n.) rejection or disowning; repudiation, denial"}, {"term": "repentant", "definition": "(adj.) feeling remorseful; sorry, contrite"}, {"term": "replete", "definition": "(adj.) filled or well-supplied; full, abundant"}, {"term": "repose", "definition": "(n.) a state of rest or sleep; relaxation, tranquility"}, {"term": "reprehensible", "definition": "(adj.) deserving blame; shameful, disgraceful"}, {"term": "repressed by", "definition": "(adj.) subdued or held back; restrained, suppressed"}, {"term": "reprieve", "definition": "(n.) a temporary relief; pardon, delay"}, {"term": "reproach", "definition": "(v.) to express disapproval; scold, criticize"}, {"term": "reprobate", "definition": "(n.) a morally unprincipled person; scoundrel, rogue"}, {"term": "reprove", "definition": "(v.) to criticize gently; correct, admonish"}, {"term": "repudiate", "definition": "(v.) to reject or deny; renounce, disclaim"}, {"term": "repulse", "definition": "(v.) to drive back or disgust; repel, reject"}, {"term": "reputable", "definition": "(adj.) well thought of; respected, trustworthy"}, {"term": "requisition", "definition": "(n.) a formal request or demand; order, claim"}, {"term": "rescind", "definition": "(v.) to cancel or revoke; withdraw, annul"}, {"term": "reservoir", "definition": "(n.) a large supply or storage; store, reserve"}, {"term": "resilient", "definition": "(adj.) able to recover quickly; tough, flexible"}, {"term": "resolute", "definition": "(adj.) determined or unwavering; steadfast, firm"}, {"term": "resolve", "definition": "(v.) to decide or settle; determine, solve"}, {"term": "respite", "definition": "(n.) a short rest or break; relief, pause"}, {"term": "resplendent", "definition": "(adj.) shining brilliantly; radiant, dazzling"}, {"term": "restitution", "definition": "(n.) compensation for loss; repayment, reparation"}, {"term": "restive", "definition": "(adj.) restless or impatient; agitated, uneasy"}, {"term": "restrained", "definition": "(adj.) controlled or reserved; moderate, subdued"}, {"term": "retaliates", "definition": "(v.) strikes back in revenge; responds, avenges"}, {"term": "retract", "definition": "(v.) to take back; withdraw, recant"}, {"term": "revel", "definition": "(v.) to enjoy intensely; celebrate, indulge"}, {"term": "revere", "definition": "(v.) to honor or respect deeply; admire, venerate"}, {"term": "revoke", "definition": "(v.) to cancel or withdraw; rescind, annul"}, {"term": "rhapsodize", "definition": "(v.) to speak or write with enthusiasm; gush, rave"}, {"term": "ribald", "definition": "(adj.) vulgar or indecent; coarse, bawdy"}, {"term": "rife", "definition": "(adj.) widespread or common; prevalent, abundant"}, {"term": "rigid", "definition": "(adj.) stiff or inflexible; strict, unyielding"}, {"term": "rousing", "definition": "(adj.) exciting or stirring; inspiring, energetic"}, {"term": "rudimentary", "definition": "(adj.) basic or undeveloped; elementary, primitive"}, {"term": "ruminate", "definition": "(v.) to think deeply; ponder, reflect"}, {"term": "ruse", "definition": "(n.) a trick or deception; ploy, stratagem"}, {"term": "saccharine", "definition": "(adj.) overly sweet or sentimental; syrupy, sappy"}, {"term": "sacrosanct", "definition": "(adj.) extremely sacred or inviolable; holy, untouchable"}, {"term": "sagacity", "definition": "(n.) wisdom or sound judgment; insight, intelligence"}, {"term": "salient", "definition": "(adj.) most noticeable or important; prominent, key"}, {"term": "salutation", "definition": "(n.) a greeting or acknowledgment; welcome, address"}, {"term": "salve", "definition": "(n.) a soothing balm or comfort; ointment, relief"}, {"term": "sanctimonious", "definition": "(adj.) hypocritically pious; self-righteous, preachy"}, {"term": "sanguine", "definition": "(adj.) optimistic or positive; hopeful, confident"}, {"term": "satiate", "definition": "(v.) to satisfy fully; fill, quench"}, {"term": "saturated with", "definition": "(adj.) completely soaked or filled; drenched, permeated"}, {"term": "scathing", "definition": "(adj.) severely critical; harsh, biting"}, {"term": "scintillating", "definition": "(adj.) brilliantly lively or clever; sparkling, witty"}, {"term": "scrupulous", "definition": "(adj.) very careful or precise; meticulous, honest"}, {"term": "scurrilous", "definition": "(adj.) vulgar or abusive; defamatory, insulting"}, {"term": "sedentary", "definition": "(adj.) involving much sitting or inactivity; inactive, stationary"}, {"term": "semaphore", "definition": "(n.) a visual signal system; beacon, flag"}, {"term": "seminal", "definition": "(adj.) highly original and influential; groundbreaking, formative"}, {"term": "sensual", "definition": "(adj.) relating to the senses or physical pleasure; erotic, tactile"}, {"term": "sensuous", "definition": "(adj.) appealing to the senses; luxurious, pleasing"}, {"term": "serendipity", "definition": "(n.) fortunate discovery by chance; luck, fluke"}, {"term": "serene", "definition": "(adj.) calm and peaceful; tranquil, composed"}, {"term": "servile", "definition": "(adj.) overly submissive; fawning, slavish"}, {"term": "signaling", "definition": "(v.) communicating a message; indicating, showing"}, {"term": "simulate", "definition": "(v.) to imitate or replicate; mimic, reproduce"}, {"term": "sinuous", "definition": "(adj.) winding or curving; twisting, serpentine"}, {"term": "sobriety", "definition": "(n.) seriousness or self-restraint; abstinence, solemnity"}, {"term": "solicitous", "definition": "(adj.) showing concern or care; attentive, considerate"}, {"term": "solipsistic", "definition": "(adj.) self-centered or egoistic; narcissistic, egotistic"}, {"term": "soluble", "definition": "(adj.) able to dissolve; dissolvable, mixable"}, {"term": "solvent", "definition": "(adj.) financially stable or able to dissolve; stable, dissolving"}, {"term": "somnolent", "definition": "(adj.) sleepy or drowsy; sluggish, dozy"}, {"term": "sophomoric", "definition": "(adj.) immature or juvenile; naive, superficial"}, {"term": "sovereign", "definition": "(adj.) possessing supreme power; autonomous, independent"}, {"term": "spans", "definition": "(v.) extends across or covers; bridges, stretches"}, {"term": "specious", "definition": "(adj.) deceptively attractive; misleading, false"}, {"term": "speculative", "definition": "(adj.) based on guesses; hypothetical, risky"}, {"term": "spurious", "definition": "(adj.) false or fake; bogus, counterfeit"}, {"term": "staged", "definition": "(adj.) planned or rehearsed; arranged, orchestrated"}, {"term": "stagnate", "definition": "(v.) to stop developing or flowing; stall, languish"}, {"term": "staid", "definition": "(adj.) serious and unadventurous"}, {"term": "still", "definition": "(adj.) calm or motionless"}, {"term": "stingy", "definition": "(adj.) unwilling to give or spend; miserly"}, {"term": "stoic", "definition": "(adj.) enduring pain without showing emotion"}, {"term": "stolid", "definition": "(adj.) unemotional or dull"}, {"term": "strenuous", "definition": "(adj.) requiring great effort; exhausting"}, {"term": "strident", "definition": "(adj.) harsh and loud"}, {"term": "stupefy", "definition": "(v.) to shock or stun; daze"}, {"term": "sturdily", "definition": "(adv.) in a strong and solid way"}, {"term": "subjugate", "definition": "(v.) to bring under control; conquer"}, {"term": "sublime", "definition": "(adj.) of great beauty or excellence"}, {"term": "submissive", "definition": "(adj.) obedient or passive"}, {"term": "subsumed in", "definition": "(v.) included or absorbed within"}, {"term": "subversive", "definition": "(adj.) seeking to undermine authority"}, {"term": "succinct", "definition": "(adj.) brief and clear; concise"}, {"term": "succumb", "definition": "(v.) to give in or yield"}, {"term": "superfluous", "definition": "(adj.) unnecessary or excessive"}, {"term": "supplementary", "definition": "(adj.) added to complete or enhance"}, {"term": "surfeit", "definition": "(n.) an excessive amount"}, {"term": "surmise", "definition": "(v.) to guess without certain evidence"}, {"term": "surpassed by", "definition": "(v.) exceeded in performance or value"}, {"term": "surreptitious", "definition": "(adj.) secretive or stealthy"}, {"term": "surrogate", "definition": "(n.) substitute or replacement"}, {"term": "susceptible to", "definition": "(adj.) easily influenced or affected by"}, {"term": "swarthy", "definition": "(adj.) dark-complexioned"}, {"term": "sycophant", "definition": "(n.) a flatterer for gain; toady"}, {"term": "synchronization", "definition": "(n.) coordinated timing or movement"}, {"term": "tacit", "definition": "(adj.) unspoken but understood"}, {"term": "taciturn", "definition": "(adj.) quiet and reserved"}, {"term": "tangential", "definition": "(adj.) only slightly relevant; off-topic"}, {"term": "tantamount", "definition": "(adj.) equal in value or meaning"}, {"term": "tedious", "definition": "(adj.) boring and repetitive"}, {"term": "temerity", "definition": "(n.) boldness or recklessness"}, {"term": "temperance", "definition": "(n.) moderation or self-restraint"}, {"term": "tenable", "definition": "(adj.) able to be defended or maintained"}, {"term": "tenuous", "definition": "(adj.) weak or uncertain"}, {"term": "terrestrial", "definition": "(adj.) related to the Earth"}, {"term": "timorous", "definition": "(adj.) fearful or shy"}, {"term": "tirade", "definition": "(n.) a long angry speech"}, {"term": "toady", "definition": "(n.) a person who flatters for favor; sycophant"}, {"term": "tome", "definition": "(n.) a large scholarly book"}, {"term": "torpid", "definition": "(adj.) sluggish or inactive"}, {"term": "torrid", "definition": "(adj.) very hot or passionate"}, {"term": "tortuous", "definition": "(adj.) full of twists and turns; complex"}, {"term": "tractable", "definition": "(adj.) easily managed or controlled"}, {"term": "tranquil", "definition": "(adj.) peaceful and calm"}, {"term": "transcending", "definition": "(v.) rising above or going beyond"}, {"term": "transgress", "definition": "(v.) to violate a rule or law"}, {"term": "transient", "definition": "(adj.) lasting only a short time; temporary"}, {"term": "transmute", "definition": "(v.) to change form or nature; transform"}, {"term": "travesty", "definition": "(n.) a distorted or absurd imitation"}, {"term": "tremulous", "definition": "(adj.) shaking or timid; trembling"}, {"term": "trenchant", "definition": "(adj.) sharp or forceful; incisive"}, {"term": "trepidation", "definition": "(n.) fear or anxiety"}, {"term": "trite", "definition": "(adj.) overused and unoriginal"}, {"term": "truculent", "definition": "(adj.) aggressively defiant; hostile"}, {"term": "truncate", "definition": "(v.) to shorten by cutting off; abbreviate"}, {"term": "turgid", "definition": "(adj.) swollen or pompous; inflated"}, {"term": "turpitude", "definition": "(n.) moral corruption; depravity"}, {"term": "ubiquitous", "definition": "(adj.) present everywhere; pervasive"}, {"term": "umbrage", "definition": "(n.) offense or annoyance"}, {"term": "unanimous", "definition": "(adj.) in full agreement"}, {"term": "uncanny", "definition": "(adj.) strangely familiar or eerie"}, {"term": "unctuous", "definition": "(adj.) excessively flattering or oily"}, {"term": "undermine", "definition": "(v.) to weaken or sabotage"}, {"term": "underscore", "definition": "(v.) to emphasize"}, {"term": "undifferentiated", "definition": "(adj.) lacking distinct features"}, {"term": "undulate", "definition": "(v.) to move in waves; ripple"}, {"term": "uniform", "definition": "(adj.) consistent or unchanging"}, {"term": "unobtrusive", "definition": "(adj.) not attracting attention; discreet"}, {"term": "unpretentious", "definition": "(adj.) modest and simple"}, {"term": "upbraid", "definition": "(v.) to scold or criticize"}, {"term": "usurp", "definition": "(v.) to seize power unlawfully"}, {"term": "utilitarian", "definition": "(adj.) practical and functional"}, {"term": "utopia", "definition": "(n.) an ideal or perfect society"}, {"term": "vacillate", "definition": "(v.) to waver between choices; hesitate"}, {"term": "vacuous", "definition": "(adj.) lacking ideas or intelligence"}, {"term": "validate", "definition": "(v.) to confirm or prove; verify"}, {"term": "vapid", "definition": "(adj.) dull or lacking life"}, {"term": "variegated", "definition": "(adj.) multicolored or diverse"}, {"term": "vehemently", "definition": "(adv.) with strong emotion; passionately"}, {"term": "veneer", "definition": "(n.) a thin surface covering; façade"}, {"term": "venerable", "definition": "(adj.) worthy of respect due to age or dignity"}, {"term": "venerate", "definition": "(v.) to regard with deep respect; revere"}, {"term": "veracity", "definition": "(n.) truthfulness; honesty"}, {"term": "verbose", "definition": "(adj.) wordy; long-winded"}, {"term": "verdant", "definition": "(adj.) green with vegetation; lush"}, {"term": "verisimilitude in", "definition": "(n.) appearance of truth or realism"}, {"term": "vestige", "definition": "(n.) a trace or remnant"}, {"term": "vex", "definition": "(v.) to annoy or bother"}, {"term": "vicarious", "definition": "(adj.) experienced through another"}, {"term": "vicissitude", "definition": "(n.) change or variation; fluctuation"}, {"term": "vigilant", "definition": "(adj.) watchful or alert"}, {"term": "vilify", "definition": "(v.) to slander or defame"}, {"term": "vindicate", "definition": "(v.) to clear from blame; justify"}, {"term": "vindictive", "definition": "(adj.) seeking revenge; spiteful"}, {"term": "virtuoso", "definition": "(n.) a highly skilled artist or performer"}, {"term": "viscous", "definition": "(adj.) thick and sticky"}, {"term": "vitriolic", "definition": "(adj.) bitter and harsh"}, {"term": "vituperate", "definition": "(v.) to criticize harshly; berate"}, {"term": "vivacious", "definition": "(adj.) lively and animated"}, {"term": "vivid", "definition": "(adj.) clear and detailed; bright"}, {"term": "vocation", "definition": "(n.) a career or calling"}, {"term": "vociferous", "definition": "(adj.) loud and forceful; noisy"}, {"term": "wallow", "definition": "(v.) to indulge in or roll around"}, {"term": "wane", "definition": "(v.) to decrease or fade"}, {"term": "wanton", "definition": "(adj.) reckless or malicious"}, {"term": "whimsical", "definition": "(adj.) playfully unusual; fanciful"}, {"term": "wily", "definition": "(adj.) cunning or clever; sly"}, {"term": "winsome", "definition": "(adj.) charming or pleasing"}, {"term": "wistful", "definition": "(adj.) longing or sadly reflective"}, {"term": "wizened", "definition": "(adj.) shriveled or wrinkled"}, {"term": "wrath", "definition": "(n.) intense anger; rage"}, {"term": "yoke", "definition": "(v.) to join or bind together"}, {"term": "zealous", "definition": "(adj.) enthusiastic or passionate"}, {"term": "zenith", "definition": "(n.) the highest point; peak"}, {"term": "zephyr", "definition": "(n.) a gentle breeze"}];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let session = null;          // current session object, or null
+let sessionHistory = [];     // completed sessions this tab
+let allMissedCounts = {};    // term -> miss count across all sessions
+let currentPool = "all";     // "all" or "missed"
+
+const els = {
+  screens: {
+    setup: document.getElementById('screen-setup'),
+    quiz: document.getElementById('screen-quiz'),
+    summary: document.getElementById('screen-summary'),
+    stats: document.getElementById('screen-stats'),
+  },
+  globalNav: document.getElementById('global-nav'),
+  deckSizeLabel: document.getElementById('deck-size-label'),
+  groupLength: document.getElementById('group-length'),
+  groupTimer: document.getElementById('group-timer'),
+  reviewGroup: document.getElementById('review-group'),
+  groupPool: document.getElementById('group-pool'),
+  missedPoolCount: document.getElementById('missed-pool-count'),
+  startBtn: document.getElementById('start-btn'),
+  setupNote: document.getElementById('setup-note'),
+
+  progressText: document.getElementById('progress-text'),
+  progressFill: document.getElementById('progress-fill'),
+  sessionClock: document.getElementById('session-clock'),
+  pauseBtn: document.getElementById('pause-btn'),
+  endBtn: document.getElementById('end-btn'),
+  questionTimerBar: document.getElementById('question-timer-bar'),
+  questionTimerFill: document.getElementById('question-timer-fill'),
+  cardTab: document.getElementById('card-tab'),
+  cardNumber: document.getElementById('card-number'),
+  cardTimerRing: document.getElementById('card-timer-ring'),
+  cardTimerNum: document.getElementById('card-timer-num'),
+  definitionText: document.getElementById('definition-text'),
+  optionsGrid: document.getElementById('options-grid'),
+  feedbackMsg: document.getElementById('feedback-msg'),
+  nextBtn: document.getElementById('next-btn'),
+
+  pauseOverlay: document.getElementById('pause-overlay'),
+  resumeBtn: document.getElementById('resume-btn'),
+  pauseEndBtn: document.getElementById('pause-end-btn'),
+
+  summaryTitle: document.getElementById('summary-title'),
+  summarySub: document.getElementById('summary-sub'),
+  statAccuracy: document.getElementById('stat-accuracy'),
+  statCorrect: document.getElementById('stat-correct'),
+  statMissed: document.getElementById('stat-missed'),
+  statAvgtime: document.getElementById('stat-avgtime'),
+  statDuration: document.getElementById('stat-duration'),
+  missedList: document.getElementById('missed-list'),
+  reviewMissedBtn: document.getElementById('review-missed-btn'),
+  newSessionBtn: document.getElementById('new-session-btn'),
+  viewStatsBtn: document.getElementById('view-stats-btn'),
+
+  worstWords: document.getElementById('worst-words'),
+  statsHistory: document.getElementById('stats-history'),
+  statsNewBtn: document.getElementById('stats-new-btn'),
+};
+
+/* ============================================================
+   UTIL
+   ============================================================ */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+
+function pad2(n){ return n.toString().padStart(2,'0'); }
+
+function formatClock(totalSeconds){
+  const m = Math.floor(totalSeconds/60);
+  const s = Math.floor(totalSeconds%60);
+  return pad2(m)+':'+pad2(s);
+}
+
+function showScreen(name){
+  Object.values(els.screens).forEach(s=>s.classList.remove('active'));
+  els.screens[name].classList.add('active');
+  els.globalNav.style.display = (name==='setup') ? 'none' : 'flex';
+  window.scrollTo({top:0, behavior:'instant'});
+}
+
+/* ============================================================
+   SETUP SCREEN INTERACTIONS
+   ============================================================ */
+let chosenLength = 25;
+let chosenTimer = 15;
+
+els.deckSizeLabel.textContent = VOCAB.length + " words in the drawer";
+
+els.groupLength.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.pill');
+  if(!btn) return;
+  [...els.groupLength.children].forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  chosenLength = parseInt(btn.dataset.len, 10);
+});
+
+els.groupTimer.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.pill');
+  if(!btn) return;
+  [...els.groupTimer.children].forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  chosenTimer = parseInt(btn.dataset.timer, 10);
+});
+
+els.groupPool.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.pill');
+  if(!btn) return;
+  [...els.groupPool.children].forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  currentPool = btn.dataset.pool;
+});
+
+els.startBtn.addEventListener('click', ()=>{
+  startSession({ length: chosenLength, timerSeconds: chosenTimer, pool: currentPool });
+});
+
+document.querySelectorAll('[data-nav]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const target = btn.dataset.nav;
+    if(target === 'setup') goToSetup();
+    if(target === 'stats') renderStatsScreen();
+  });
+});
+
+els.newSessionBtn.addEventListener('click', goToSetup);
+els.statsNewBtn.addEventListener('click', goToSetup);
+els.viewStatsBtn.addEventListener('click', renderStatsScreen);
+
+function goToSetup(){
+  const missedTerms = Object.keys(allMissedCounts);
+  if(missedTerms.length > 0){
+    els.reviewGroup.style.display = '';
+    els.missedPoolCount.textContent = missedTerms.length;
+  } else {
+    els.reviewGroup.style.display = 'none';
+    currentPool = 'all';
+    [...els.groupPool.children].forEach(b=>b.classList.remove('selected'));
+    els.groupPool.children[0].classList.add('selected');
+  }
+  showScreen('setup');
+}
+
+/* ============================================================
+   SESSION LOGIC
+   ============================================================ */
+function buildDeck(pool){
+  if(pool === 'missed'){
+    const terms = new Set(Object.keys(allMissedCounts));
+    return VOCAB.filter(v => terms.has(v.term));
+  }
+  return VOCAB.slice();
+}
+
+function startSession(opts){
+  const deck = shuffle(buildDeck(opts.pool));
+  if(deck.length === 0){
+    alert("No words available for that pool yet.");
+    return;
+  }
+  const isEndless = opts.length === 0;
+  const total = isEndless ? null : Math.min(opts.length, deck.length);
+
+  session = {
+    deck: deck,
+    pool: opts.pool,
+    timerSeconds: opts.timerSeconds,
+    total: total,
+    isEndless: isEndless,
+    index: 0,
+    correctCount: 0,
+    incorrectCount: 0,
+    missedWords: [],          // {term, definition}
+    answerTimes: [],          // seconds per answered card
+    startedAt: Date.now(),
+    elapsedMs: 0,
+    paused: false,
+    answered: false,
+    questionStartTime: null,
+    questionTimeLeft: opts.timerSeconds,
+    advancing: false,
+    advanceTimeLeft: 0,
+    tickHandle: null,
+    lastTick: null,
+    ended: false,
+  };
+
+  showScreen('quiz');
+  startTicker();
+  loadNextCard();
+}
+
+function startTicker(){
+  if(session.tickHandle) clearInterval(session.tickHandle);
+  session.lastTick = Date.now();
+  session.tickHandle = setInterval(tick, 100);
+}
+
+function tick(){
+  if(!session || session.paused || session.ended) { session.lastTick = Date.now(); return; }
+  const now = Date.now();
+  const dt = (now - session.lastTick) / 1000;
+  session.lastTick = now;
+
+  session.elapsedMs += dt*1000;
+  els.sessionClock.textContent = formatClock(session.elapsedMs/1000);
+
+  if(session.advancing){
+    session.advanceTimeLeft -= dt;
+    if(session.advanceTimeLeft <= 0){
+      advanceCard();
+    }
+    return;
+  }
+
+  if(!session.answered && session.timerSeconds > 0){
+    session.questionTimeLeft -= dt;
+    updateQuestionTimerUI();
+    if(session.questionTimeLeft <= 0){
+      session.questionTimeLeft = 0;
+      updateQuestionTimerUI();
+      handleTimeout();
+    }
+  }
+}
+
+function updateQuestionTimerUI(){
+  const pct = Math.max(0, session.questionTimeLeft / session.timerSeconds) * 100;
+  els.questionTimerFill.style.width = pct + '%';
+  if(pct < 25){
+    els.questionTimerFill.style.background = 'var(--red)';
+  } else if(pct < 55){
+    els.questionTimerFill.style.background = 'var(--brass-dark)';
+  } else {
+    els.questionTimerFill.style.background = 'var(--brass)';
+  }
+  els.cardTimerNum.textContent = Math.ceil(session.questionTimeLeft);
+}
+
+function loadNextCard(){
+  if(session.isEndless && session.index >= session.deck.length){
+    session.deck = session.deck.concat(shuffle(buildDeck(session.pool)));
+  }
+  if(!session.isEndless && session.index >= session.total){
+    endSession();
+    return;
+  }
+  if(session.isEndless === false && session.index >= session.deck.length){
+    endSession();
+    return;
+  }
+
+  const card = session.deck[session.index];
+  session.currentCard = card;
+  session.answered = false;
+  session.advancing = false;
+  session.questionTimeLeft = session.timerSeconds;
+  session.questionStartTime = Date.now();
+
+  // progress
+  const cardNum = session.index + 1;
+  els.progressText.textContent = session.isEndless
+    ? ('Card ' + cardNum + ' · endless')
+    : ('Card ' + cardNum + ' of ' + session.total);
+  const pct = session.isEndless ? 0 : Math.round((session.index / session.total) * 100);
+  els.progressFill.style.width = pct + '%';
+  els.cardNumber.textContent = 'No. ' + String(cardNum).padStart(4,'0');
+  els.cardTab.textContent = 'Definition';
+
+  // timer visuals
+  if(session.timerSeconds > 0){
+    els.questionTimerBar.style.display = '';
+    els.cardTimerRing.style.display = 'flex';
+    updateQuestionTimerUI();
+  } else {
+    els.questionTimerBar.style.display = 'none';
+    els.cardTimerRing.style.display = 'none';
+  }
+
+  els.definitionText.textContent = card.definition;
+  els.feedbackMsg.textContent = '';
+  els.feedbackMsg.className = 'feedback-msg';
+  els.nextBtn.style.display = 'none';
+
+  // build options
+  const distractorPool = VOCAB.filter(v => v.term !== card.term);
+  const distractors = shuffle(distractorPool).slice(0, 3);
+  const options = shuffle([card, ...distractors]);
+
+  els.optionsGrid.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  options.forEach((opt, i)=>{
+    const b = document.createElement('button');
+    b.className = 'option-card';
+    b.innerHTML = '<span class="option-letter">'+letters[i]+'</span>' + escapeHtml(opt.term);
+    b.dataset.term = opt.term;
+    b.addEventListener('click', ()=>handleAnswer(opt.term, b));
+    els.optionsGrid.appendChild(b);
+  });
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+function handleAnswer(chosenTerm, btnEl){
+  if(session.answered) return;
+  session.answered = true;
+
+  const timeTaken = (Date.now() - session.questionStartTime)/1000;
+  session.answerTimes.push(timeTaken);
+
+  const correct = session.currentCard.term;
+  const isCorrect = chosenTerm === correct;
+
+  [...els.optionsGrid.children].forEach(b=>{
+    b.disabled = true;
+    if(b.dataset.term === correct){
+      b.classList.add('correct');
+    } else if(b === btnEl && !isCorrect){
+      b.classList.add('incorrect');
+    } else {
+      b.classList.add('dim');
+    }
+  });
+
+  if(isCorrect){
+    session.correctCount++;
+    els.feedbackMsg.textContent = '✓ Correct — ' + timeTaken.toFixed(1) + 's';
+    els.feedbackMsg.className = 'feedback-msg correct';
+  } else {
+    session.incorrectCount++;
+    session.missedWords.push({term: correct, definition: session.currentCard.definition});
+    allMissedCounts[correct] = (allMissedCounts[correct]||0) + 1;
+    els.feedbackMsg.textContent = '✗ Missed — it was "' + correct + '"';
+    els.feedbackMsg.className = 'feedback-msg incorrect';
+  }
+
+  els.nextBtn.style.display = '';
+  beginAdvance();
+}
+
+function handleTimeout(){
+  if(session.answered) return;
+  session.answered = true;
+  session.answerTimes.push(session.timerSeconds);
+
+  const correct = session.currentCard.term;
+  session.incorrectCount++;
+  session.missedWords.push({term: correct, definition: session.currentCard.definition});
+  allMissedCounts[correct] = (allMissedCounts[correct]||0) + 1;
+
+  [...els.optionsGrid.children].forEach(b=>{
+    b.disabled = true;
+    if(b.dataset.term === correct){
+      b.classList.add('correct');
+    } else {
+      b.classList.add('dim');
+    }
+  });
+
+  els.feedbackMsg.textContent = "⏳ Time's up — it was \"" + correct + '"';
+  els.feedbackMsg.className = 'feedback-msg incorrect';
+  els.nextBtn.style.display = '';
+  beginAdvance();
+}
+
+function beginAdvance(){
+  session.advancing = true;
+  session.advanceTimeLeft = 1.6;
+}
+
+function advanceCard(){
+  session.advancing = false;
+  session.index++;
+  loadNextCard();
+}
+
+els.nextBtn.addEventListener('click', ()=>{
+  if(session.advancing){
+    advanceCard();
+  }
+});
+
+/* ---------- Pause / End ---------- */
+els.pauseBtn.addEventListener('click', ()=>{
+  if(!session || session.ended) return;
+  session.paused = true;
+  els.pauseOverlay.classList.add('active');
+});
+
+els.resumeBtn.addEventListener('click', ()=>{
+  session.paused = false;
+  session.lastTick = Date.now();
+  els.pauseOverlay.classList.remove('active');
+});
+
+function requestEnd(){
+  session.paused = false;
+  els.pauseOverlay.classList.remove('active');
+  endSession();
+}
+
+els.endBtn.addEventListener('click', ()=>{
+  if(!session || session.ended) return;
+  session.paused = true;
+  els.pauseOverlay.classList.add('active');
+});
+els.pauseEndBtn.addEventListener('click', requestEnd);
+
+/* ============================================================
+   SESSION END / SUMMARY
+   ============================================================ */
+function endSession(){
+  if(!session || session.ended) return;
+  session.ended = true;
+  if(session.tickHandle) clearInterval(session.tickHandle);
+
+  const attempted = session.correctCount + session.incorrectCount;
+  const accuracy = attempted ? Math.round((session.correctCount/attempted)*100) : 0;
+  const avgTime = session.answerTimes.length
+    ? (session.answerTimes.reduce((a,b)=>a+b,0)/session.answerTimes.length)
+    : 0;
+
+  const record = {
+    when: Date.now(),
+    pool: session.pool,
+    attempted: attempted,
+    correct: session.correctCount,
+    incorrect: session.incorrectCount,
+    accuracy: accuracy,
+    avgTime: avgTime,
+    durationMs: session.elapsedMs,
+    missedWords: session.missedWords.slice(),
+  };
+  sessionHistory.push(record);
+
+  renderSummary(record);
+  showScreen('summary');
+}
+
+function renderSummary(record){
+  els.summaryTitle.textContent = record.accuracy >= 80 ? "Nicely filed."
+    : record.accuracy >= 50 ? "Drawer closed."
+    : "Back to the stacks.";
+  els.summarySub.textContent = record.attempted + ' card' + (record.attempted===1?'':'s') +
+    ' reviewed from the ' + (record.pool==='missed' ? 'missed-words pool' : 'full drawer') + '.';
+
+  els.statAccuracy.textContent = record.accuracy + '%';
+  els.statCorrect.textContent = record.correct;
+  els.statMissed.textContent = record.incorrect;
+  els.statAvgtime.textContent = record.avgTime.toFixed(1) + 's';
+  els.statDuration.textContent = formatClock(record.durationMs/1000);
+
+  els.missedList.innerHTML = '';
+  if(record.missedWords.length === 0){
+    const li = document.createElement('li');
+    li.className = 'missed-empty';
+    li.textContent = 'Nothing missed — every card matched. Well filed.';
+    els.missedList.appendChild(li);
+    els.reviewMissedBtn.style.display = 'none';
+  } else {
+    els.reviewMissedBtn.style.display = '';
+    // dedupe within this session's missed list for display
+    const seen = new Set();
+    record.missedWords.forEach(w=>{
+      if(seen.has(w.term)) return;
+      seen.add(w.term);
+      const li = document.createElement('li');
+      const termSpan = document.createElement('span');
+      termSpan.className = 'missed-term';
+      termSpan.textContent = w.term;
+      const defSpan = document.createElement('span');
+      defSpan.className = 'missed-def';
+      defSpan.textContent = w.definition;
+      li.appendChild(termSpan);
+      li.appendChild(defSpan);
+      els.missedList.appendChild(li);
+    });
+  }
+}
+
+els.reviewMissedBtn.addEventListener('click', ()=>{
+  const terms = new Set(sessionHistory[sessionHistory.length-1].missedWords.map(w=>w.term));
+  const savedMissed = allMissedCounts;
+  // temporarily restrict pool to just these terms for a focused review
+  const deck = shuffle(VOCAB.filter(v => terms.has(v.term)));
+  startSession({ length: deck.length, timerSeconds: chosenTimer, pool: 'all' });
+  // override deck to only the just-missed set
+  session.deck = deck;
+  session.total = deck.length;
+  session.isEndless = false;
+  session.index = 0;
+  loadNextCard();
+});
+
+/* ============================================================
+   STATS SCREEN
+   ============================================================ */
+function renderStatsScreen(){
+  // worst words
+  const entries = Object.entries(allMissedCounts).sort((a,b)=>b[1]-a[1]).slice(0,20);
+  els.worstWords.innerHTML = '';
+  if(entries.length === 0){
+    const div = document.createElement('div');
+    div.className = 'stats-empty';
+    div.style.width = '100%';
+    div.textContent = 'No sessions yet — run a drill to start building your record.';
+    els.worstWords.appendChild(div);
+  } else {
+    entries.forEach(([term,count])=>{
+      const chip = document.createElement('span');
+      chip.className = 'worst-chip';
+      chip.innerHTML = escapeHtml(term) + ' <b>×' + count + '</b>';
+      els.worstWords.appendChild(chip);
+    });
+  }
+
+  // history
+  els.statsHistory.innerHTML = '';
+  if(sessionHistory.length === 0){
+    const div = document.createElement('div');
+    div.className = 'stats-empty';
+    div.textContent = 'Your finished sessions will line up here, most recent first.';
+    els.statsHistory.appendChild(div);
+  } else {
+    sessionHistory.slice().reverse().forEach((r, i)=>{
+      const row = document.createElement('div');
+      row.className = 'session-row';
+      const num = sessionHistory.length - i;
+      const accClass = r.accuracy >= 80 ? 'good' : (r.accuracy >= 50 ? 'mid' : 'low');
+      const date = new Date(r.when);
+      const timeStr = date.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+      row.innerHTML =
+        '<span class="idx">#'+num+'</span>' +
+        '<span class="mode-tag">'+(r.pool==='missed' ? 'Review' : 'Full drawer')+' · '+r.attempted+' cards</span>' +
+        '<span class="acc '+accClass+'">'+r.accuracy+'%</span>' +
+        '<span>'+formatClock(r.durationMs/1000)+'</span>' +
+        '<span class="when">'+timeStr+'</span>';
+      els.statsHistory.appendChild(row);
+    });
+  }
+
+  showScreen('stats');
+}
+
+/* init */
+goToSetup();
+</script>
+</body>
+</html>
