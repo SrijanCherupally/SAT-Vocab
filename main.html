@@ -583,10 +583,11 @@ abscond, to leave hurriedly and secretly"></textarea>
       <button class="link-btn" id="backFromStats">&larr; Back</button>
     </div>
 
-    <div class="summary-grid">
-      <div class="summary-stat"><div class="num" id="allSessions">0</div><div class="lbl">Sessions</div></div>
-      <div class="summary-stat"><div class="num" id="allAccuracy">0%</div><div class="lbl">Lifetime accuracy</div></div>
-      <div class="summary-stat"><div class="num" id="allAnswered">0</div><div class="lbl">Words answered</div></div>
+    <div class="quick-stat-row" style="margin-top:0;">
+      <div class="quick-stat"><div class="num" id="allSessions">0</div><div class="lbl">Sessions</div></div>
+      <div class="quick-stat"><div class="num" id="allAccuracy">0%</div><div class="lbl">Lifetime accuracy</div></div>
+      <div class="quick-stat"><div class="num" id="allAnswered">0</div><div class="lbl">Words answered</div></div>
+      <div class="quick-stat"><div class="num" id="allCorrect">0</div><div class="lbl">Words correct</div></div>
     </div>
 
     <div class="tabs" style="margin-top:22px;">
@@ -1108,6 +1109,7 @@ function renderStats(){
   $('allSessions').textContent = history.length;
   $('allAccuracy').textContent = acc + '%';
   $('allAnswered').textContent = totalQ;
+  $('allCorrect').textContent = totalC;
 
   const body = $('historyBody');
   body.innerHTML = '';
